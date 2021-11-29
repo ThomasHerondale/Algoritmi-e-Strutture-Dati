@@ -43,16 +43,23 @@ public class BinarySearchTree<T> {
     private void print() {
         var stack = new ArrayDeque<Node<T>>();
         stack.push(root);
+        boolean isLeaf = true;
         while (!stack.isEmpty()) {
             var currentNode = stack.pop();
             if (currentNode.getSx() != null) {
+                isLeaf = false;
                 System.out.println("'" + currentNode.getKey() + "'" + "ha figlio sx. '" + currentNode.getSx() + "'");
                 stack.push(currentNode.getSx());
             }
+
             if (currentNode.getDx() != null) {
                 System.out.println("'" + currentNode.getKey() + "'" + "ha figlio dx. '" + currentNode.getDx() + "'");
                 stack.push(currentNode.getDx());
+                isLeaf = false;
             }
+
+            if (isLeaf)
+                System.out.println("'" + currentNode.getKey() + "' è un nodo foglia.");
         }
     }
 }
