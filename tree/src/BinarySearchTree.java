@@ -1,5 +1,11 @@
+import java.util.ArrayDeque;
+
 public class BinarySearchTree<T> {
     private Node<T> root;
+
+    public BinarySearchTree(int key, T data) {
+        this.root = new Node<>(key, data);
+    }
 
     public void insert(Node<T> newNode) {
         var parent = findParent(newNode);
@@ -26,15 +32,27 @@ public class BinarySearchTree<T> {
         }
     }
 
-    public Node<T> delete(int key) {
+    /*public Node<T> delete(int key) {
 
-    }
+    }*/
 
-    public boolean search(int key) {
+    /*public boolean search(int key) {
 
-    }
+    }*/
 
-    public void print() {
-
+    private void print() {
+        var stack = new ArrayDeque<Node<T>>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            var currentNode = stack.pop();
+            if (currentNode.getSx() != null) {
+                System.out.println("'" + currentNode.getKey() + "'" + "ha figlio sx. '" + currentNode.getSx() + "'");
+                stack.push(currentNode.getSx());
+            }
+            if (currentNode.getDx() != null) {
+                System.out.println("'" + currentNode.getKey() + "'" + "ha figlio dx. '" + currentNode.getDx() + "'");
+                stack.push(currentNode.getDx());
+            }
+        }
     }
 }
