@@ -22,5 +22,8 @@ public class Node<T> {
         return dx;
     }
 
-
+    @Override
+    public String toString() {
+        return String.valueOf(key);
+    }
 }
