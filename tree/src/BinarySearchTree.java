@@ -40,7 +40,7 @@ public class BinarySearchTree<T> {
 
     }*/
 
-    private void print() {
+    public void print() {
         var stack = new ArrayDeque<Node<T>>();
         stack.push(root);
         boolean isLeaf = true;
@@ -48,12 +48,12 @@ public class BinarySearchTree<T> {
             var currentNode = stack.pop();
             if (currentNode.getSx() != null) {
                 isLeaf = false;
-                System.out.println("'" + currentNode.getKey() + "'" + "ha figlio sx. '" + currentNode.getSx() + "'");
+                System.out.println("'" + currentNode.getKey() + "' " + "ha figlio sx. '" + currentNode.getSx() + "'");
                 stack.push(currentNode.getSx());
             }
 
             if (currentNode.getDx() != null) {
-                System.out.println("'" + currentNode.getKey() + "'" + "ha figlio dx. '" + currentNode.getDx() + "'");
+                System.out.println("'" + currentNode.getKey() + "' " + "ha figlio dx. '" + currentNode.getDx() + "'");
                 stack.push(currentNode.getDx());
                 isLeaf = false;
             }
