@@ -5,6 +5,11 @@ public class Node<T> {
     private Node<T> sx;
     private Node<T> dx;
 
+    public Node(int key, T data) {
+        this.key = key;
+        this.data = data;
+    }
+
     public int getKey() {
         return key;
     }
