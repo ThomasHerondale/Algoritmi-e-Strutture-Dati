@@ -43,8 +43,9 @@ public class BinarySearchTree<T> {
     private void print() {
         var stack = new ArrayDeque<Node<T>>();
         stack.push(root);
-        boolean isLeaf = true;
+
         while (!stack.isEmpty()) {
+            boolean isLeaf = true;
             var currentNode = stack.pop();
             if (currentNode.getSx() != null) {
                 isLeaf = false;
@@ -53,9 +54,9 @@ public class BinarySearchTree<T> {
             }
 
             if (currentNode.getDx() != null) {
+                isLeaf = false;
                 System.out.println("'" + currentNode + "'" + "ha figlio dx. '" + currentNode.getDx() + "'");
                 stack.push(currentNode.getDx());
-                isLeaf = false;
             }
 
             if (isLeaf)
