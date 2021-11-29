@@ -48,18 +48,18 @@ public class BinarySearchTree<T> {
             var currentNode = stack.pop();
             if (currentNode.getSx() != null) {
                 isLeaf = false;
-                System.out.println("'" + currentNode.getKey() + "'" + "ha figlio sx. '" + currentNode.getSx() + "'");
+                System.out.println("'" + currentNode + "'" + "ha figlio sx. '" + currentNode.getSx() + "'");
                 stack.push(currentNode.getSx());
             }
 
             if (currentNode.getDx() != null) {
-                System.out.println("'" + currentNode.getKey() + "'" + "ha figlio dx. '" + currentNode.getDx() + "'");
+                System.out.println("'" + currentNode + "'" + "ha figlio dx. '" + currentNode.getDx() + "'");
                 stack.push(currentNode.getDx());
                 isLeaf = false;
             }
 
             if (isLeaf)
-                System.out.println("'" + currentNode.getKey() + "' è un nodo foglia.");
+                System.out.println("'" + currentNode + "' è un nodo foglia.");
         }
     }
 }
