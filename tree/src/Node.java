@@ -30,5 +30,9 @@ public class Node<T> {
         this.dx = dx;
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(key);
+    }
 
 }
