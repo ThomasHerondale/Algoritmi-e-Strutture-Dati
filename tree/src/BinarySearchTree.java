@@ -21,12 +21,12 @@ public class BinarySearchTree<T> {
 
     private Node<T> findParent(Node<T> childNode, Node<T> currentNode) {
         if (childNode.getKey() <= currentNode.getKey()) {
-            if (childNode == currentNode.getSx())
+            if (currentNode.getSx() == null || childNode == currentNode.getSx())
                 return currentNode;
             else
                 return findParent(childNode, currentNode.getSx());
         } else {
-            if (childNode == currentNode.getDx())
+            if (currentNode.getDx() == null || childNode == currentNode.getDx())
                 return currentNode;
             else
                 return findParent(childNode, currentNode.getDx());
