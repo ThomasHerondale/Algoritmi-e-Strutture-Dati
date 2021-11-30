@@ -15,20 +15,21 @@ public class BinarySearchTree<T> {
             parent.setDx(newNode);
     }
 
-    private Node<T> findParent(Node<T> node) {
-        var currentNode = root;
-        while (true) {
-            if (node.getKey() <= currentNode.getKey()) {
-                if (currentNode.getSx() == null)
-                    return currentNode;
-                else
-                    currentNode = currentNode.getSx();
-            } else {
-                if (currentNode.getDx() == null)
-                    return currentNode;
-                else
-                    currentNode = currentNode.getDx();
-            }
+    private Node<T> findParent(Node<T> childNode) {
+        return findParent(childNode, root);
+    }
+
+    private Node<T> findParent(Node<T> childNode, Node<T> currentNode) {
+        if (childNode.getKey() <= currentNode.getKey()) {
+            if (childNode == currentNode.getSx())
+                return currentNode;
+            else
+                return findParent(childNode, currentNode.getSx());
+        } else {
+            if (childNode == currentNode.getDx())
+                return currentNode;
+            else
+                return findParent(childNode, currentNode.getDx());
         }
     }
 
