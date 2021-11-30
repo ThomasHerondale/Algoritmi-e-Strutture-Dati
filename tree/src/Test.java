@@ -11,7 +11,7 @@ public class Test {
         bst.insert(new Node<>(7, 'q'));
         bst.insert(new Node<>(8, 'o'));
         bst.insert(new Node<>(6, 'j'));
-        var bin = bst.delete(3);
+        var bin = bst.delete(9);
         bst.print();
     }
 }
