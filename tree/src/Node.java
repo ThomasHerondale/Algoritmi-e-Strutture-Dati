@@ -30,8 +30,13 @@ public class Node<T> {
         this.dx = dx;
     }
 
-    public boolean isLeaf() {
-        return this.dx == null && this.sx == null;
+    public int childrenCount() {
+        var counter = 0;
+        if (this.dx != null)
+            counter++;
+        if (this.sx != null)
+            counter++;
+        return counter;
     }
 
     @Override
