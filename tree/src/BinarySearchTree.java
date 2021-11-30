@@ -1,4 +1,5 @@
 import java.util.ArrayDeque;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class BinarySearchTree<T> {
@@ -37,9 +38,63 @@ public class BinarySearchTree<T> {
         }
     }
 
-    /*public Node<T> delete(int key) {
+    // Ritorna il nodo appena cancellato
+    public Node<T> delete(int key) {
+        // Se il nodo non esiste, lancia NoSuchElementException
+        var toDelete = search(key).orElseThrow(NoSuchElementException::new);
+        if (toDelete.childrenCount() == 0)
+            return leafDelete(toDelete);
+        else if (toDelete.childrenCount() == 1) {
+            var parent = findParent(toDelete);
+            // Stiamo cancellando la radice?
+            if (parent == null)
+                return rootDelete(root.childrenCount());
+            if (toDelete.getKey() <= parent.getKey())
+                parent.setSx(toDelete.getOnlyChild());
+            else
+                parent.setDx(toDelete.getOnlyChild());
+        } else {
+            var previous = previous(toDelete);
+            assert previous != null;    // Studiare il caso in cui previous è null!
+            copy(previous, toDelete);
+            // Il predecessore dovrebbe avere, al più, un unico figlio
+            assert previous.childrenCount() <= 1;
+            previous = delete(previous.getKey());
+            if (previous.childrenCount() == 1) {
+                var parent = findParent(previous);
+                assert parent != null;  // Studiare il caso in cui parent è null!
+                if (previous.getKey() <= parent.getKey())
+                    parent.setSx(previous.getOnlyChild());
+                else
+                    parent.setDx(previous.getOnlyChild());
+            }
+            return toDelete;
+        }
 
-    }*/
+        // Controlla che il nodo non sia più presente nell'albero
+        assert search(toDelete.getKey()).isEmpty();
+        return toDelete;
+    }
+
+    private Node<T> leafDelete(Node<T> toDelete) {
+        var parent = findParent(toDelete);
+        // Non possiamo cancellare la radice dentro al metodo che cancella foglie!
+        assert parent != null;
+        // toDelete non è più figlio di suo padre
+        if (toDelete.getKey() <= parent.getKey())
+            parent.setSx(null);
+        else
+            parent.setDx(null);
+        return toDelete;
+    }
+
+    private Node<T> rootDelete(int childrenCount) {
+        if (childrenCount == 1)
+            root = root.getOnlyChild();
+        // TODO: e se root ha due figli?
+        assert childrenCount == 1;
+        return null;
+    }
 
     /* TODO: non funziona se eliminiamo il minimo dell'albero -> non ci interessa perché noi lo useremo solo
        TODO: in caso di cancellazioni */
@@ -62,6 +117,16 @@ public class BinarySearchTree<T> {
         while (root.getDx() != null)
             root = root.getDx();
         return root;
+    }
+
+    private void copy(Node<T> source, Node<T> target) {
+        target.setKey(source.getKey());
+        target.setData(source.getData());
+        target.setSx(source.getSx());
+        target.setDx(source.getDx());
+
+        // Alla fine della copia, i due nodi dovranno essere identici
+        assert target.equals(source);
     }
 
     public Optional<Node<T>> search(int key) {
