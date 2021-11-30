@@ -14,6 +14,8 @@ public class BinarySearchTree<T> {
     }
 
     private Node<T> findParent(Node<T> childNode, Node<T> currentNode) {
+        if (childNode == root)
+            return null;
         if (childNode.getKey() <= currentNode.getKey()) {
             if (currentNode.getSx() == null || childNode == currentNode.getSx())
                 return currentNode;
