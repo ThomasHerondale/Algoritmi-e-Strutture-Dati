@@ -9,6 +9,7 @@ public class BinarySearchTree<T> {
 
     public void insert(Node<T> newNode) {
         var parent = findParent(newNode);
+        assert parent != null;
         if (newNode.getKey() <= parent.getKey())
             parent.setSx(newNode);
         else
