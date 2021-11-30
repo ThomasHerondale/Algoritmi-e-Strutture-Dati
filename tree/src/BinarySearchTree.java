@@ -40,37 +40,8 @@ public class BinarySearchTree<T> {
 
     // Ritorna il nodo appena cancellato
     public Node<T> delete(int key) {
-        // Se il nodo non esiste, lancia NoSuchElementException
-        var toDelete = search(key).orElseThrow(NoSuchElementException::new);
-        if (toDelete.childrenCount() == 0)
-            return leafDelete(toDelete);
-        else if (toDelete.childrenCount() == 1) {
-            var parent = findParent(toDelete);
-            // Stiamo cancellando la radice?
-            if (parent == null)
-                return rootDelete(root.childrenCount());
-            if (toDelete.getKey() <= parent.getKey())
-                parent.setSx(toDelete.getOnlyChild());
-            else
-                parent.setDx(toDelete.getOnlyChild());
-            return toDelete;
-        } else {
-            var previous = previous(toDelete);
-            assert previous != null;    // Studiare il caso in cui previous è null!
-            // Il predecessore dovrebbe avere, al più, un unico figlio
-            assert previous.childrenCount() <= 1;
-            delete(previous);
-            copy(previous, toDelete);
-            if (previous.childrenCount() == 1) {
-                var parent = findParent(previous);
-                assert parent != null;  // Studiare il caso in cui parent è null!
-                if (previous.getKey() <= parent.getKey())
-                    parent.setSx(previous.getOnlyChild());
-                else
-                    parent.setDx(previous.getOnlyChild());
-            }
-            return toDelete;
-        }
+        var toDeleteOpt = search(key);
+        return delete(toDeleteOpt.orElseThrow(NoSuchElementException::new));
     }
 
     private Node<T> leafDelete(Node<T> toDelete) {
@@ -97,7 +68,7 @@ public class BinarySearchTree<T> {
     // Necessario poiché le chiavi duplicate non ci consentono di affidarci alla sola ricerca per chiave
     private Node<T> delete(Node<T> toDelete) {
         if (toDelete.childrenCount() == 0)
-            leafDelete(toDelete);
+            return leafDelete(toDelete);
         if (toDelete.childrenCount() == 1) {
             var parent = findParent(toDelete);
             if (parent == null)

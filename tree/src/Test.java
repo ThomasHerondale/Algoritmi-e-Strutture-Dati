@@ -4,6 +4,7 @@ public class Test {
         bst.insert(new Node<>(1, 'a'));
         bst.insert(new Node<>(2, 'c'));
         bst.insert(new Node<>(9, 'p'));
+        bst.delete(3);
         bst.print();
     }
 }
