@@ -3,6 +3,7 @@ public class BinarySearchTree<T> {
 
     public void insert(Node<T> newNode) {
         var parent = findParent(newNode);
+        assert parent != null;
         if (newNode.getKey() <= parent.getKey())
             parent.setSx(newNode);
         else
@@ -14,6 +15,8 @@ public class BinarySearchTree<T> {
     }
 
     private Node<T> findParent(Node<T> childNode, Node<T> currentNode) {
+        if (childNode == root)
+            return null;
         if (childNode.getKey() <= currentNode.getKey()) {
             if (currentNode.getSx() == null || childNode == currentNode.getSx())
                 return currentNode;
