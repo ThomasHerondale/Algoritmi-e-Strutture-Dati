@@ -30,6 +30,10 @@ public class Node<T> {
         this.dx = dx;
     }
 
+    public boolean isLeaf() {
+        return this.dx == null && this.sx == null;
+    }
+
     @Override
     public String toString() {
         return String.valueOf(key);
