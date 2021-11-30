@@ -1,17 +1,16 @@
+import java.util.Random;
+import java.util.Scanner;
+
 public class Test {
     public static void main(String[] args) {
-        var bst = new BinarySearchTree<>(3, 'c');
-        bst.insert(new Node<>(2, 'c'));
-        bst.insert(new Node<>(1, 'a'));
-        bst.insert(new Node<>(9, 'p'));
-        bst.insert(new Node<>(4, 'd'));
-        bst.insert(new Node<>(5, 'e'));
-        bst.insert(new Node<>(10, 'l'));
-        bst.insert(new Node<>(11, 'k'));
-        bst.insert(new Node<>(7, 'q'));
-        bst.insert(new Node<>(8, 'o'));
-        bst.insert(new Node<>(6, 'j'));
-        var bin = bst.delete(9);
+        var rng = new Random();
+        var input = new Scanner(System.in);
+        BinarySearchTree<Character> bst = new BinarySearchTree<>(rng.nextInt(0, 100), 'c' );
+        for (var i = 0; i < 11; i++) {
+            bst.insert(new Node<>(rng.nextInt(0, 100), 'a'));
+        }
+        bst.print();
+        bst.delete(Integer.parseInt(input.nextLine()));
         bst.print();
     }
 }
