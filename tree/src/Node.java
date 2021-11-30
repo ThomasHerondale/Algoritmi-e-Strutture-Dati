@@ -39,6 +39,16 @@ public class Node<T> {
         return counter;
     }
 
+    public Node<T> getOnlyChild() {
+        // Questo metodo verrà chiamato solo se si è verificato che il nodo abbia un unico figlio
+        assert childrenCount() == 1;
+
+        if (this.dx != null)
+            return this.dx;
+        else
+            return this.sx;
+    }
+
     @Override
     public String toString() {
         return String.valueOf(key);
