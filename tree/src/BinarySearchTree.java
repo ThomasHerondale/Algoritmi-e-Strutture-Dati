@@ -2,6 +2,7 @@ import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@SuppressWarnings("UnusedReturnValue")
 public class BinarySearchTree<T> {
     private Node<T> root;
 
@@ -56,16 +57,6 @@ public class BinarySearchTree<T> {
         return toDelete;
     }
 
-    /*private Node<T> rootDelete(int childrenCount) {
-        var oldRoot = root;
-        if (childrenCount == 1)
-            root = root.getOnlyChild();
-        else if (childrenCount == 2) {
-            delete(root);
-        }
-        return oldRoot;
-    }*/
-
     private Node<T> delete(Node<T> toDelete) {
         if (toDelete.childrenCount() == 0)
             return leafDelete(toDelete);
@@ -93,13 +84,10 @@ public class BinarySearchTree<T> {
         }
     }
 
-    /* Non funziona se eliminiamo il minimo dell'albero -> non ci interessa perché noi lo useremo solo
-       in caso di cancellazioni */
     private Node<T> previous(Node<T> node) {
         if (node.getSx() != null)
             return maximum(node.getSx());
-        else {  // Il predecessore è il primo figlio destro che si incontra RISALENDO gli antenati di node
-            // Finché il nodo corrente è figlio sinistro di suo padre
+        else {
             var currentNode = findParent(node);
             Node<T> parent;
             while ((parent = findParent(currentNode)) != null && currentNode != parent.getSx()) {
