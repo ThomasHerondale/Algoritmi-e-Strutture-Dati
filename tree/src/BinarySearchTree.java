@@ -57,13 +57,11 @@ public class BinarySearchTree<T> {
     }
 
     private Node<T> rootDelete(int childrenCount) {
-        var oldRoot = root;
         if (childrenCount == 1)
             root = root.getOnlyChild();
-        else if (childrenCount == 2) {
-            delete(root);
-        }
-        return oldRoot;
+        // TODO: e se root ha due figli?
+        assert childrenCount == 1;
+        return null;
     }
 
     // Metodo per cancellare il predecessore
@@ -71,7 +69,7 @@ public class BinarySearchTree<T> {
     private Node<T> delete(Node<T> toDelete) {
         if (toDelete.childrenCount() == 0)
             return leafDelete(toDelete);
-        else if (toDelete.childrenCount() == 1) {
+        if (toDelete.childrenCount() == 1) {
             var parent = findParent(toDelete);
             if (parent == null)
                 return rootDelete(root.childrenCount());
@@ -80,26 +78,8 @@ public class BinarySearchTree<T> {
             else
                 parent.setDx(toDelete.getOnlyChild());
             return toDelete;
-        } else {
-            // Stiamo cancellando la radice?
-            if (findParent(toDelete) == null)
-                return rootDelete(root.childrenCount());
-            var previous = previous(toDelete);
-            assert previous != null;    // Studiare il caso in cui previous è null!
-            // Il predecessore dovrebbe avere, al più, un unico figlio
-            assert previous.childrenCount() <= 1;
-            delete(previous);
-            copy(previous, toDelete);
-            if (previous.childrenCount() == 1) {
-                var parent = findParent(previous);
-                assert parent != null;  // Studiare il caso in cui parent è null!
-                if (previous.getKey() <= parent.getKey())
-                    parent.setSx(previous.getOnlyChild());
-                else
-                    parent.setDx(previous.getOnlyChild());
-            }
-            return toDelete;
         }
+            return toDelete;
     }
 
     /* Non funziona se eliminiamo il minimo dell'albero -> non ci interessa perché noi lo useremo solo
