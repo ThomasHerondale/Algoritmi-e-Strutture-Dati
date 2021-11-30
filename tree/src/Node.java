@@ -14,6 +14,14 @@ public class Node<T> {
         return key;
     }
 
+    public void setKey(int key) {
+        this.key = key;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
     public Node<T> getSx() {
         return sx;
     }
