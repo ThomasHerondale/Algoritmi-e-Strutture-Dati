@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Node<T> {
     private int key;
     private T data;
@@ -59,6 +61,19 @@ public class Node<T> {
             return this.dx;
         else
             return this.sx;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node<?> node = (Node<?>) o;
+        return key == node.key && data.equals(node.data) && Objects.equals(sx, node.sx) && Objects.equals(dx, node.dx);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, data, sx, dx);
     }
 
     @Override
