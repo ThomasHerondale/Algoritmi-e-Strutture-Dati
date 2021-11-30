@@ -26,12 +26,12 @@ public class BinarySearchTree<T> {
         if (childNode == root)
             return null;
         if (childNode.getKey() <= currentNode.getKey()) {
-            if (currentNode.getSx() == null || childNode == currentNode.getSx())
+            if (currentNode.getSx() == null || childNode.equals(currentNode.getSx()))
                 return currentNode;
             else
                 return findParent(childNode, currentNode.getSx());
         } else {
-            if (currentNode.getDx() == null || childNode == currentNode.getDx())
+            if (currentNode.getDx() == null || childNode.equals(currentNode.getDx()))
                 return currentNode;
             else
                 return findParent(childNode, currentNode.getDx());
@@ -53,13 +53,14 @@ public class BinarySearchTree<T> {
                 parent.setSx(toDelete.getOnlyChild());
             else
                 parent.setDx(toDelete.getOnlyChild());
+            return toDelete;
         } else {
             var previous = previous(toDelete);
             assert previous != null;    // Studiare il caso in cui previous è null!
-            copy(previous, toDelete);
             // Il predecessore dovrebbe avere, al più, un unico figlio
             assert previous.childrenCount() <= 1;
-            previous = delete(previous.getKey());
+            delete(previous);
+            copy(previous, toDelete);
             if (previous.childrenCount() == 1) {
                 var parent = findParent(previous);
                 assert parent != null;  // Studiare il caso in cui parent è null!
@@ -70,10 +71,6 @@ public class BinarySearchTree<T> {
             }
             return toDelete;
         }
-
-        // Controlla che il nodo non sia più presente nell'albero
-        assert search(toDelete.getKey()).isEmpty();
-        return toDelete;
     }
 
     private Node<T> leafDelete(Node<T> toDelete) {
@@ -96,11 +93,29 @@ public class BinarySearchTree<T> {
         return null;
     }
 
-    /* TODO: non funziona se eliminiamo il minimo dell'albero -> non ci interessa perché noi lo useremo solo
-       TODO: in caso di cancellazioni */
+    // Metodo per cancellare il predecessore
+    // Necessario poiché le chiavi duplicate non ci consentono di affidarci alla sola ricerca per chiave
+    private Node<T> delete(Node<T> toDelete) {
+        if (toDelete.childrenCount() == 0)
+            leafDelete(toDelete);
+        if (toDelete.childrenCount() == 1) {
+            var parent = findParent(toDelete);
+            if (parent == null)
+                return rootDelete(root.childrenCount());
+            if (toDelete.getKey() <= parent.getKey())
+                parent.setSx(toDelete.getOnlyChild());
+            else
+                parent.setDx(toDelete.getOnlyChild());
+            return toDelete;
+        }
+            return toDelete;
+    }
+
+    /* Non funziona se eliminiamo il minimo dell'albero -> non ci interessa perché noi lo useremo solo
+       in caso di cancellazioni */
     private Node<T> previous(Node<T> node) {
         if (node.getSx() != null)
-            return maximum(node);
+            return maximum(node.getSx());
         else {  // Il predecessore è il primo figlio destro che si incontra RISALENDO gli antenati di node
             // Finché il nodo corrente è figlio sinistro di suo padre
             var currentNode = findParent(node);
@@ -108,7 +123,7 @@ public class BinarySearchTree<T> {
             while ((parent = findParent(currentNode)) != null && currentNode != parent.getSx()) {
                 currentNode = findParent(currentNode);
             }
-            return currentNode;
+            return findParent(currentNode);
         }
     }
 
@@ -122,11 +137,6 @@ public class BinarySearchTree<T> {
     private void copy(Node<T> source, Node<T> target) {
         target.setKey(source.getKey());
         target.setData(source.getData());
-        target.setSx(source.getSx());
-        target.setDx(source.getDx());
-
-        // Alla fine della copia, i due nodi dovranno essere identici
-        assert target.equals(source);
     }
 
     public Optional<Node<T>> search(int key) {
