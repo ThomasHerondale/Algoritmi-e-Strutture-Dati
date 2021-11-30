@@ -18,6 +18,10 @@ public class Node<T> {
         this.key = key;
     }
 
+    public T getData() {
+        return data;
+    }
+
     public void setData(T data) {
         this.data = data;
     }
