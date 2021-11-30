@@ -40,13 +40,39 @@ public class BinarySearchTree<T> {
 
     // Ritorna il nodo appena cancellato
     public Node<T> delete(int key) {
-        // Se il nodo non esiste, lancia NoSuchElementException
-        var toDelete = search(key).orElseThrow(NoSuchElementException::new);
+        var toDeleteOpt = search(key);
+        return delete(toDeleteOpt.orElseThrow(NoSuchElementException::new));
+    }
+
+    private Node<T> leafDelete(Node<T> toDelete) {
+        var parent = findParent(toDelete);
+        // Non possiamo cancellare la radice dentro al metodo che cancella foglie!
+        assert parent != null;
+        // toDelete non è più figlio di suo padre
+        if (toDelete.getKey() <= parent.getKey())
+            parent.setSx(null);
+        else
+            parent.setDx(null);
+        return toDelete;
+    }
+
+    private Node<T> rootDelete(int childrenCount) {
+        var oldRoot = root;
+        if (childrenCount == 1)
+            root = root.getOnlyChild();
+        else if (childrenCount == 2) {
+            delete(root);
+        }
+        return oldRoot;
+    }
+
+    // Metodo per cancellare il predecessore
+    // Necessario poiché le chiavi duplicate non ci consentono di affidarci alla sola ricerca per chiave
+    private Node<T> delete(Node<T> toDelete) {
         if (toDelete.childrenCount() == 0)
             return leafDelete(toDelete);
         else if (toDelete.childrenCount() == 1) {
             var parent = findParent(toDelete);
-            // Stiamo cancellando la radice?
             if (parent == null)
                 return rootDelete(root.childrenCount());
             if (toDelete.getKey() <= parent.getKey())
@@ -55,6 +81,9 @@ public class BinarySearchTree<T> {
                 parent.setDx(toDelete.getOnlyChild());
             return toDelete;
         } else {
+            // Stiamo cancellando la radice?
+            if (findParent(toDelete) == null)
+                return rootDelete(root.childrenCount());
             var previous = previous(toDelete);
             assert previous != null;    // Studiare il caso in cui previous è null!
             // Il predecessore dovrebbe avere, al più, un unico figlio
@@ -71,44 +100,6 @@ public class BinarySearchTree<T> {
             }
             return toDelete;
         }
-    }
-
-    private Node<T> leafDelete(Node<T> toDelete) {
-        var parent = findParent(toDelete);
-        // Non possiamo cancellare la radice dentro al metodo che cancella foglie!
-        assert parent != null;
-        // toDelete non è più figlio di suo padre
-        if (toDelete.getKey() <= parent.getKey())
-            parent.setSx(null);
-        else
-            parent.setDx(null);
-        return toDelete;
-    }
-
-    private Node<T> rootDelete(int childrenCount) {
-        if (childrenCount == 1)
-            root = root.getOnlyChild();
-        // TODO: e se root ha due figli?
-        assert childrenCount == 1;
-        return null;
-    }
-
-    // Metodo per cancellare il predecessore
-    // Necessario poiché le chiavi duplicate non ci consentono di affidarci alla sola ricerca per chiave
-    private Node<T> delete(Node<T> toDelete) {
-        if (toDelete.childrenCount() == 0)
-            leafDelete(toDelete);
-        if (toDelete.childrenCount() == 1) {
-            var parent = findParent(toDelete);
-            if (parent == null)
-                return rootDelete(root.childrenCount());
-            if (toDelete.getKey() <= parent.getKey())
-                parent.setSx(toDelete.getOnlyChild());
-            else
-                parent.setDx(toDelete.getOnlyChild());
-            return toDelete;
-        }
-            return toDelete;
     }
 
     /* Non funziona se eliminiamo il minimo dell'albero -> non ci interessa perché noi lo useremo solo
