@@ -1,3 +1,7 @@
+package bst;
+
+import java.util.Objects;
+
 public class Node<T> {
     private int key;
     private T data;
@@ -77,10 +81,5 @@ public class Node<T> {
     @Override
     public String toString() {
         return String.valueOf(key);
-=========
-    public void setDx(Node<T> dx) {
-        this.dx = dx;
->>>>>>>>> Temporary merge branch 2
     }
-
 }

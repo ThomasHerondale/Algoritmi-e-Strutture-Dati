@@ -1,3 +1,5 @@
+package bst;
+
 import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
 import java.util.Optional;
