@@ -12,6 +12,14 @@ public class BinarySearchTree<T> {
         this.root = new Node<>(key, data);
     }
 
+    protected BinarySearchTree(Node<T> root) {
+        this.root = root;
+    }
+
+    protected Node<T> getRoot() {
+        return root;
+    }
+
     public void insert(Node<T> newNode) {
         var parent = findParent(newNode);
         assert parent != null;
