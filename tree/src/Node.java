@@ -18,8 +18,16 @@ public class Node<T> {
         return sx;
     }
 
+    public void setSx(Node<T> sx) {
+        this.sx = sx;
+    }
+
     public Node<T> getDx() {
         return dx;
+    }
+
+    public void setDx(Node<T> dx) {
+        this.dx = dx;
     }
 
     @Override

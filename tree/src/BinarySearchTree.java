@@ -1,19 +1,66 @@
+import java.util.ArrayDeque;
+
 public class BinarySearchTree<T> {
     private Node<T> root;
 
-    public void insert(Node<T> node) {
-
+    public BinarySearchTree(int key, T data) {
+        this.root = new Node<>(key, data);
     }
 
-    public Node<T> delete(int key) {
-
+    public void insert(Node<T> newNode) {
+        var parent = findParent(newNode);
+        if (newNode.getKey() <= parent.getKey())
+            parent.setSx(newNode);
+        else
+            parent.setDx(newNode);
     }
 
-    public boolean search(int key) {
-
+    private Node<T> findParent(Node<T> node) {
+        var currentNode = root;
+        while (true) {
+            if (node.getKey() <= currentNode.getKey()) {
+                if (currentNode.getSx() == null)
+                    return currentNode;
+                else
+                    currentNode = currentNode.getSx();
+            } else {
+                if (currentNode.getDx() == null)
+                    return currentNode;
+                else
+                    currentNode = currentNode.getDx();
+            }
+        }
     }
 
-    public void print() {
+    /*public Node<T> delete(int key) {
 
+    }*/
+
+    /*public boolean search(int key) {
+
+    }*/
+
+    private void print() {
+        var stack = new ArrayDeque<Node<T>>();
+        stack.push(root);
+
+        while (!stack.isEmpty()) {
+            boolean isLeaf = true;
+            var currentNode = stack.pop();
+            if (currentNode.getSx() != null) {
+                isLeaf = false;
+                System.out.println("'" + currentNode + "'" + "ha figlio sx. '" + currentNode.getSx() + "'");
+                stack.push(currentNode.getSx());
+            }
+
+            if (currentNode.getDx() != null) {
+                isLeaf = false;
+                System.out.println("'" + currentNode + "'" + "ha figlio dx. '" + currentNode.getDx() + "'");
+                stack.push(currentNode.getDx());
+            }
+
+            if (isLeaf)
+                System.out.println("'" + currentNode + "' è un nodo foglia.");
+        }
     }
 }
