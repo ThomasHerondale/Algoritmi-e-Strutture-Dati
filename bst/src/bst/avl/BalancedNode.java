@@ -2,6 +2,8 @@ package bst.avl;
 
 import bst.Node;
 
+import java.util.Objects;
+
 public class BalancedNode<T> extends Node<T> {
     private int balanceFactor;
 
@@ -18,8 +20,11 @@ public class BalancedNode<T> extends Node<T> {
         this.balanceFactor = getSubtreeHeight(this.getSx()) - getSubtreeHeight(this.getDx());
     }
 
-    private int getSubtreeHeight(Node<T> current) {
-        return getSubtreeHeight(current, 1);
+    public int getSubtreeHeight(Node<T> current) {
+        if (current != null)
+            return getSubtreeHeight(current, 1);
+        else
+            return 0;
     }
 
     private int getSubtreeHeight(Node<T> current, int currentHeight) {
@@ -32,5 +37,19 @@ public class BalancedNode<T> extends Node<T> {
         if (current.getDx() != null)
             dxHeight = getSubtreeHeight(current.getDx(), currentHeight + 1);
         return Math.max(sxHeight, dxHeight);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        BalancedNode<?> that = (BalancedNode<?>) o;
+        return balanceFactor == that.balanceFactor;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), balanceFactor);
     }
 }
