@@ -55,13 +55,13 @@ public class AVLTree<T> extends BinarySearchTree<T> {
         }
     }
 
+    @SuppressWarnings("IfStatementWithIdenticalBranches")
     private void rebalance(BalancedNode<T> criticalNode) {
         System.out.println(criticalNode + " è sbilanciato!");
         // Il nodo è sbilanciato a sinistra?
         if (criticalNode.getBalanceFactor() > 0) {
             BalancedNode<T> sx = (BalancedNode<T>) criticalNode.getSx();
-            // TODO balanceFactor
-            if (sx.getSubtreeHeight(sx.getSx()) > sx.getSubtreeHeight(sx.getDx())) {  // SX -- SX
+            if (sx.getBalanceFactor() >= 0) {  // SX -- SX
                 System.out.println("Ruoto " + criticalNode + " a destra");
                 rotateRight(criticalNode);
             } else {    // DX -- SX
@@ -73,7 +73,7 @@ public class AVLTree<T> extends BinarySearchTree<T> {
             }
         } else {    // Il nodo è sbilanciato a destra
             BalancedNode<T> dx = (BalancedNode<T>) criticalNode.getDx();
-            if (dx.getSubtreeHeight(dx.getSx()) > dx.getSubtreeHeight(dx.getDx())) {    // SX -- DX
+            if (dx.getBalanceFactor() >= 0) {    // SX -- DX
                 System.out.println("Composta");
                 System.out.println("Ruoto " + criticalNode.getDx() + " a destra");
                 rotateRight(criticalNode.getDx());
