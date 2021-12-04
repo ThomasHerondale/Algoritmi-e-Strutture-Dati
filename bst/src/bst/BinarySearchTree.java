@@ -56,7 +56,7 @@ public class BinarySearchTree<T> {
     }
 
     // Ritorna il nodo appena cancellato
-    public Node<T> delete(int key) {
+    public Node<T> delete(int key) throws NoSuchElementException {
         var toDeleteOpt = search(key);
         return delete(toDeleteOpt.orElseThrow(NoSuchElementException::new));
     }
@@ -73,7 +73,7 @@ public class BinarySearchTree<T> {
         return toDelete;
     }
 
-    private Node<T> delete(Node<T> toDelete) {
+    protected Node<T> delete(Node<T> toDelete) {
         if (toDelete.childrenCount() == 0)
             return leafDelete(toDelete);
         else if (toDelete.childrenCount() == 1) {
