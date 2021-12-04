@@ -20,20 +20,26 @@ public class BinarySearchTree<T> {
         return root;
     }
 
-    public void insert(Node<T> newNode) {
+    protected void setRoot(Node<T> root) {
+        this.root = root;
+    }
+
+    // Ritorna il padre del nuovo nodo (l'unico nodo che questo metodo modifica)
+    public Node<T> insert(Node<T> newNode) {
         var parent = findParent(newNode);
         assert parent != null;
         if (newNode.getKey() <= parent.getKey())
             parent.setSx(newNode);
         else
             parent.setDx(newNode);
+        return parent;
     }
 
-    private Node<T> findParent(Node<T> childNode) {
+    protected Node<T> findParent(Node<T> childNode) {
         return findParent(childNode, root);
     }
 
-    private Node<T> findParent(Node<T> childNode, Node<T> currentNode) {
+    protected Node<T> findParent(Node<T> childNode, Node<T> currentNode) {
         if (childNode == root)
             return null;
         if (childNode.getKey() <= currentNode.getKey()) {
