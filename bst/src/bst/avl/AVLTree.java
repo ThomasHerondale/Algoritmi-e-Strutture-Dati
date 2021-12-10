@@ -1,7 +1,7 @@
 package bst.avl;
 
 import bst.BinarySearchTree;
-import bst.Node;
+import tree.Node;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

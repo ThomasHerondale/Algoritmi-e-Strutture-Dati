@@ -1,5 +1,7 @@
 package bst;
 
+import tree.Node;
+
 import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -55,7 +57,6 @@ public class BinarySearchTree<T> {
         }
     }
 
-    // Ritorna il nodo appena cancellato
     public Node<T> delete(int key) throws NoSuchElementException {
         var toDeleteOpt = search(key);
         return delete(toDeleteOpt.orElseThrow(NoSuchElementException::new));

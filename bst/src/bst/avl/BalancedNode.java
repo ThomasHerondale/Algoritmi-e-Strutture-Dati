@@ -1,6 +1,6 @@
 package bst.avl;
 
-import bst.Node;
+import tree.Node;
 
 import java.util.Objects;
 
