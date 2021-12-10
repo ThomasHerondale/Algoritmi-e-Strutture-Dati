@@ -1,4 +1,4 @@
-package bst;
+package tree;
 
 import java.util.Objects;
 

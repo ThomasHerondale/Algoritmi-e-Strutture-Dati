@@ -1,5 +1,7 @@
 package bst;
 
+import tree.Node;
+
 import java.util.Random;
 import java.util.Scanner;
 

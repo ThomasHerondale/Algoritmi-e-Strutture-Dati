@@ -1,15 +1,23 @@
 package bst;
 
+import tree.Node;
+import tree.Tree;
+
 import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-@SuppressWarnings("UnusedReturnValue")
-public class BinarySearchTree<T> {
+
+public class BinarySearchTree<T> implements Tree<T> {
     private Node<T> root;
 
     public BinarySearchTree(int key, T data) {
         this.root = new Node<>(key, data);
+    }
+
+    @Override
+    public void insert(int key, T data) {
+        insert(new Node<>(key, data));
     }
 
     public void insert(Node<T> newNode) {
@@ -41,7 +49,7 @@ public class BinarySearchTree<T> {
         }
     }
 
-    // Ritorna il nodo appena cancellato
+    @Override
     public Node<T> delete(int key) {
         var toDeleteOpt = search(key);
         return delete(toDeleteOpt.orElseThrow(NoSuchElementException::new));
@@ -111,6 +119,7 @@ public class BinarySearchTree<T> {
         target.setData(source.getData());
     }
 
+    @Override
     public Optional<Node<T>> search(int key) {
         var currentNode = root;
         while (currentNode != null) {
