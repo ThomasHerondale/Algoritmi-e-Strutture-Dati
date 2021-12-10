@@ -21,6 +21,11 @@ public class AVLTree<T> extends BinarySearchTree<T> {
     }
 
     @Override
+    public void insert(int key, T data) {
+        insert(new BalancedNode<>(key, data));
+    }
+
+    @Override
     public BalancedNode<T> insert(Node<T> newNode) {
         BalancedNode<T> parent = (BalancedNode<T>) super.insert(newNode);
         // Ricalcola i fattori di bilanciamento lungo il cammino percorso per l'inserimento
@@ -63,25 +68,17 @@ public class AVLTree<T> extends BinarySearchTree<T> {
         if (criticalNode.getBalanceFactor() > 0) {
             BalancedNode<T> sx = (BalancedNode<T>) criticalNode.getSx();
             if (sx.getBalanceFactor() >= 0) {  // SX -- SX
-                System.out.println("Ruoto " + criticalNode + " a destra");
                 rotateRight(criticalNode);
             } else {    // DX -- SX
-                System.out.println("Composta");
-                System.out.println("Ruoto " + criticalNode.getSx() + " a sinistra");
                 rotateLeft(criticalNode.getSx());
-                System.out.println("Ruoto " + criticalNode + " a destra");
                 rotateRight(criticalNode);
             }
         } else {    // Il nodo è sbilanciato a destra
             BalancedNode<T> dx = (BalancedNode<T>) criticalNode.getDx();
             if (dx.getBalanceFactor() >= 0) {    // SX -- DX
-                System.out.println("Composta");
-                System.out.println("Ruoto " + criticalNode.getDx() + " a destra");
                 rotateRight(criticalNode.getDx());
-                System.out.println("Ruoto " + criticalNode + " a sinistra");
                 rotateLeft(criticalNode);
             } else {    // DX -- DX
-                System.out.println("Ruoto " + criticalNode + " a sinistra");
                 rotateLeft(criticalNode);
             }
         }
@@ -136,7 +133,6 @@ public class AVLTree<T> extends BinarySearchTree<T> {
             assert path.isEmpty();
         super.delete(toDelete);
 
-        // TODO probabilmente broken, perché dopo la prima rotazione i nodi nello stack non sono più aggiornati
         // Ricalcola i fattori di bilanciamento lungo il cammino
         while (!path.isEmpty()) {
             BalancedNode<T> currentNode = path.pop();
