@@ -1,39 +1,45 @@
 package bst;
 
-import tree.Node;
-import tree.Tree;
-
 import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-
-public class BinarySearchTree<T> implements Tree<T> {
+@SuppressWarnings("UnusedReturnValue")
+public class BinarySearchTree<T> {
     private Node<T> root;
 
     public BinarySearchTree(int key, T data) {
         this.root = new Node<>(key, data);
     }
 
-    @Override
-    public void insert(int key, T data) {
-        insert(new Node<>(key, data));
+    protected BinarySearchTree(Node<T> root) {
+        this.root = root;
     }
 
-    public void insert(Node<T> newNode) {
+    protected Node<T> getRoot() {
+        return root;
+    }
+
+    protected void setRoot(Node<T> root) {
+        this.root = root;
+    }
+
+    // Ritorna il padre del nuovo nodo (l'unico nodo che questo metodo modifica)
+    public Node<T> insert(Node<T> newNode) {
         var parent = findParent(newNode);
         assert parent != null;
         if (newNode.getKey() <= parent.getKey())
             parent.setSx(newNode);
         else
             parent.setDx(newNode);
+        return parent;
     }
 
-    private Node<T> findParent(Node<T> childNode) {
+    protected Node<T> findParent(Node<T> childNode) {
         return findParent(childNode, root);
     }
 
-    private Node<T> findParent(Node<T> childNode, Node<T> currentNode) {
+    protected Node<T> findParent(Node<T> childNode, Node<T> currentNode) {
         if (childNode == root)
             return null;
         if (childNode.getKey() <= currentNode.getKey()) {
@@ -49,7 +55,7 @@ public class BinarySearchTree<T> implements Tree<T> {
         }
     }
 
-    @Override
+    // Ritorna il nodo appena cancellato
     public Node<T> delete(int key) {
         var toDeleteOpt = search(key);
         return delete(toDeleteOpt.orElseThrow(NoSuchElementException::new));
@@ -119,7 +125,6 @@ public class BinarySearchTree<T> implements Tree<T> {
         target.setData(source.getData());
     }
 
-    @Override
     public Optional<Node<T>> search(int key) {
         var currentNode = root;
         while (currentNode != null) {
