@@ -5,6 +5,7 @@ import bst.Node;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.NoSuchElementException;
 
 public class AVLTree<T> extends BinarySearchTree<T> {
     private final Deque<BalancedNode<T>> path;
@@ -125,7 +126,40 @@ public class AVLTree<T> extends BinarySearchTree<T> {
     }
 
     @Override
-    public Node<T> delete(int key) {
-        return super.delete(key);
+    public Node<T> delete(int key) throws NoSuchElementException {
+        var toDelete = search(key).orElseThrow(NoSuchElementException::new);
+        var parent = findParent(toDelete);
+        // Tieni traccia del cammino fino al nodo cancellato, a meno che non abbiamo cancellato la radice
+        if (parent != null)
+            pathTo(parent.getKey());
+        else
+            assert path.isEmpty();
+        super.delete(toDelete);
+
+        // TODO probabilmente broken, perché dopo la prima rotazione i nodi nello stack non sono più aggiornati
+        // Ricalcola i fattori di bilanciamento lungo il cammino
+        while (!path.isEmpty()) {
+            BalancedNode<T> currentNode = path.pop();
+            currentNode.updateBalanceFactor();
+            // Se il nodo è sbilanciato, ribilancialo
+            if (Math.abs(currentNode.getBalanceFactor()) >= 2)
+                rebalance(currentNode);
+        }
+
+        return toDelete;
+    }
+
+    private void pathTo(int key) {
+        assert path.isEmpty();
+        var currentNode = getRoot();
+        while (currentNode != null) {
+            path.push(currentNode);
+            if (currentNode.getKey() == key)
+                return;
+            if (key <= currentNode.getKey())
+                currentNode = (BalancedNode<T>) currentNode.getSx();
+            else
+                currentNode = (BalancedNode<T>) currentNode.getDx();
+        }
     }
 }

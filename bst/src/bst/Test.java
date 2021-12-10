@@ -20,5 +20,11 @@ public class Test {
             bst.insert(new BalancedNode<>(n, 'a'));
         }
         bst.print();
+        var m = Integer.parseInt(input.nextLine());
+        bst.delete(m);
+        bst.print();
+        m = Integer.parseInt(input.nextLine());
+        bst.delete(m);
+        bst.print();
     }
 }
