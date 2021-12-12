@@ -1,7 +1,7 @@
 package bst;
 
 import bst.avl.AVLTree;
-import bst.avl.BalancedNode;
+import bst.avl.BalancedKeyNode;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -17,7 +17,7 @@ public class Test {
         for (var i = 0; i < 11; i++) {
             var n = rng.nextInt(0, 100);
             System.out.println("Inserito " + n);
-            bst.insert(new BalancedNode<>(n, 'a'));
+            bst.insert(new BalancedKeyNode<>(n, 'a'));
         }
         bst.print();
         var m = Integer.parseInt(input.nextLine());

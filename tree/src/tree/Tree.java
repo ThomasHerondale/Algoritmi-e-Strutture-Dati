@@ -8,7 +8,7 @@ public interface Tree<T> {
     void insert(int key, T data);
 
     // Ritorna il nodo appena cancellato
-    Node<T> delete(int key);
+    KeyNode<T> delete(int key);
 
-    Optional<Node<T>> search(int key);
+    Optional<KeyNode<T>> search(int key);
 }

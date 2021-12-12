@@ -1,13 +1,13 @@
 package bst.avl;
 
-import tree.Node;
+import tree.KeyNode;
 
 import java.util.Objects;
 
-public class BalancedNode<T> extends Node<T> {
+public class BalancedKeyNode<T> extends KeyNode<T> {
     private int balanceFactor;
 
-    public BalancedNode(int key, T data) {
+    public BalancedKeyNode(int key, T data) {
         super(key, data);
         this.balanceFactor = 0;
     }
@@ -20,14 +20,14 @@ public class BalancedNode<T> extends Node<T> {
         this.balanceFactor = getSubtreeHeight(this.getSx()) - getSubtreeHeight(this.getDx());
     }
 
-    public int getSubtreeHeight(Node<T> current) {
+    public int getSubtreeHeight(KeyNode<T> current) {
         if (current != null)
             return getSubtreeHeight(current, 1);
         else
             return 0;
     }
 
-    private int getSubtreeHeight(Node<T> current, int currentHeight) {
+    private int getSubtreeHeight(KeyNode<T> current, int currentHeight) {
         if (current.childrenCount() == 0)
             return currentHeight;
         int sxHeight = 0;
@@ -44,7 +44,7 @@ public class BalancedNode<T> extends Node<T> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        BalancedNode<?> that = (BalancedNode<?>) o;
+        BalancedKeyNode<?> that = (BalancedKeyNode<?>) o;
         return balanceFactor == that.balanceFactor;
     }
 
