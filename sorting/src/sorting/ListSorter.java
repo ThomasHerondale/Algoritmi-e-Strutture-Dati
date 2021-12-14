@@ -1,7 +1,9 @@
+package sorting;
+
 import java.util.List;
 
 /**
- * The class ListSorter contains many implementations of famous sorting alghoritms, whether their
+ * The class sorting.ListSorter contains many implementations of famous sorting alghoritms, whether their
  * performances are optimal or not.
  *
  */
@@ -12,7 +14,6 @@ public final class ListSorter<T extends Comparable<T>> {
      * Sorts a list using the Insertion Sort algorithm, in time O(n^2). Actually, if the list is already
      * partially sorted, this method reaches better performances.
      * @param list the list to be sorted
-     * @param <T> the type of the elements of the list
      */
     public void insertionSort(List<T> list) {
         for (var i = 1; i < list.size(); i++) {
@@ -36,7 +37,6 @@ public final class ListSorter<T extends Comparable<T>> {
      * Sorts a list using the Bubble Sort algorithm, in time O(n^2). Actually, it is far more probable
      * that this method is going to reach better performances.
      * @param list the list to be sorted
-     * @param <T> the type of the elements of the list
      */
     public void bubbleSort(List<T> list) {
         boolean listChanged;

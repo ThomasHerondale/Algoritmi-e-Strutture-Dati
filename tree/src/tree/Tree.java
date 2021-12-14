@@ -1,14 +1,61 @@
 package tree;
 
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-@SuppressWarnings("UnusedReturnValue")
+/**
+ * An interface representing a simple tree data structure. In the most general case, it supports three basic
+ * operations: insert, search, delete.
+ * Note that some of these operations may not be supported by every implementation, and may result in
+ * an {@link UnsupportedOperationException} being thrown.
+ * @param <T> the type of the data contained in the nodes
+ */
 public interface Tree<T> {
+    /**
+     * Creates a node containing the specified information and inserts it in this tree.
+     * @param data the information that will be contained in the node inserted
+     * @throws UnsupportedOperationException if this operation is not supported for the particular implementation
+     */
+    void insert(T data) throws UnsupportedOperationException;
 
-    void insert(int key, T data);
+    /**
+     * Deletes the node containing the specified information from this tree.
+     * @param data the information contained in the node to remove
+     * @return the removed node
+     * @throws UnsupportedOperationException if this operation is not supported for the particular implementation
+     * @throws NoSuchElementException if no node containing the specified information is present
+     */
+    Node<T> delete(T data) throws UnsupportedOperationException, NoSuchElementException;
 
-    // Ritorna il nodo appena cancellato
-    KeyNode<T> delete(int key);
+    /**
+     * Searches for the node containing the specified information in this tree.
+     * @param data the information contained in the node to search
+     * @return an empty {@link Optional} if no node matching the specified data is found, an {@link Optional}
+     * containing such node otherwise
+     */
+    Optional<Node<T>> search(T data);
 
-    Optional<KeyNode<T>> search(int key);
+    /**
+     * Prints this tree to the standard output. Note that the way the tree gets printed is strongly
+     * implementation-dependent and may vary consistently from one implementation to another.
+     */
+    void print();
+
+    /**
+     * Returns a list containing all the children of the node designated by the specified information.
+     * @param parentData the information contained in the node
+     * @return a {@link List} containing all the children of the specified node
+     * @throws NoSuchElementException if no node containing the specified information is present
+     */
+    List<Node<T>> findChildren(T parentData) throws NoSuchElementException;
+
+    /**
+     * Searches for the parent of the node containing the specified information.
+     * @param childData the information contained in the node
+     * @return an {@link Optional} containing the parent of the specified node, or an empty
+     * {@link Optional} if the specified information was contained in the root
+     * @throws NoSuchElementException if no node containing the specified information is present
+     */
+    Optional<Node<T>> findParent(T childData) throws NoSuchElementException;
 }

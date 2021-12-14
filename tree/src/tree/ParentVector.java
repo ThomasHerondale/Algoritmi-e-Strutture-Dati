@@ -2,71 +2,118 @@ package tree;
 
 import java.util.*;
 
+/**
+ * This class provides a basic implementation to the {@link Tree} interface, using the parents vector method.
+ * This particular implementation is only useful to the making of read-only trees, as the insertion and removal of
+ * any node will result in throwing an {@link java.lang.UnsupportedOperationException}.
+ * @param <T> the type of the data contained in the nodes
+ */
 public class ParentVector<T> implements Tree<T> {
+    /**
+     * The list actually representing the parents vector.
+     */
     private List<ParentVectorEntry> vector;
 
-    public ParentVector(List<KeyNode<T>> nodeList, List<Integer> parentlist) throws IllegalArgumentException {
+    /**
+     * Constructs a parents vector matching every node with the index of its parent, following the same
+     * order for the two lists.
+     * @param nodeList the list containing all the nodes of the vector
+     * @param parentlist the list containing the indexes of every parent of the nodes
+     * @throws IllegalArgumentException if the two lists differ in size
+     * @implNote Note that the root of the tree should be located at the first index of the list. This
+     * is not mandatory, but strongly recommended. The {@link Integer} index associated with such root must be
+     * set to null
+     */
+    public ParentVector(List<Node<T>> nodeList, List<Integer> parentlist) throws IllegalArgumentException {
         if (nodeList.size() != parentlist.size())
             throw new IllegalArgumentException("Number of nodes is not equal to number of parents");
         vector = new ArrayList<>(nodeList.size());
         for (var i = 0; i < nodeList.size(); i++) {
-            vector.add(new ParentVectorEntry(nodeList.get(i), parentlist.get(i)));
+            var parentIndex = parentlist.get(i) != null ? parentlist.get(i) : null;
+            vector.add(new ParentVectorEntry(nodeList.get(i), parentIndex));
         }
         vector = Collections.unmodifiableList(vector);
     }
 
     @Override
-    public void insert(int key, T data) {
-        throw new UnsupportedOperationException();
+    public void insert(T data) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Operation is not supported for the current implementation.");
     }
 
     @Override
-    public KeyNode<T> delete(int key) {
-        throw new UnsupportedOperationException();
+    public Node<T> delete(T data) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Operation is not supported for the current implementation.");
     }
 
     @Override
-    public Optional<KeyNode<T>> search(int key) {
+    public Optional<Node<T>> search(T data) {
         try {
-            return Optional.of(vector.get(find(key)).node);
+            return Optional.of(vector.get(find(data)).node);
         } catch (NoSuchElementException e) {
             return Optional.empty();
         }
     }
 
-    public Optional<KeyNode<T>> findParent(int childKey) throws NoSuchElementException {
-        var index = find(childKey);
-        ParentVectorEntry child = vector.get(index);
-        var parent = vector.get(child.parentIndex).node;
-        if (parent != null)
-            return Optional.of(parent);
-        else
-            return Optional.empty();
+    @Override
+    public void print() {
+        for (var entry : vector) {
+            System.out.print("[" + entry.node + ", ");
+            if (entry.parentIndex != null)
+                System.out.print(entry.parentIndex);
+            else
+                System.out.print("null");
+            System.out.print("]\n");
+        }
     }
 
-    public List<KeyNode<T>> findChildren(int parentKey) {
-        var children = new ArrayList<KeyNode<T>>();
+    @Override
+    public List<Node<T>> findChildren(T parentData) throws NoSuchElementException {
+        var children = new ArrayList<Node<T>>();
+        var parentIndex = find(parentData);
         for (var entry : vector) {
-            var entryParent = vector.get(entry.parentIndex).node;
-            if (entryParent.getKey() == parentKey)
+            if (entry.parentIndex == null)
+                continue;
+            if (entry.parentIndex == parentIndex)
                 children.add(entry.node);
         }
         return children;
     }
 
-    private int find(int key) throws NoSuchElementException {
-        for (int i = 0; i < vector.size(); i++) {
-            if (vector.get(i).node.getKey() == key)
-                return i;
+    @Override
+    public Optional<Node<T>> findParent(T childData) throws NoSuchElementException {
+        var index = find(childData);
+        ParentVectorEntry child = vector.get(index);
+        if (child.parentIndex != null) {
+            var parent = vector.get(child.parentIndex).node;
+            return Optional.of(parent);
         }
-        throw new NoSuchElementException("Could not find node '" + key + "'.");
+        else
+            return Optional.empty();
     }
 
-    public class ParentVectorEntry {
-        KeyNode<T> node;
-        int parentIndex;
+    /**
+     * Returns the index of the node containing the specified information in {@link ParentVector#vector}.
+     * @param data the information contained in the node to search
+     * @return the index of the searched node
+     * @throws NoSuchElementException if no node containing the specified information is present
+     */
+    private int find(T data) throws NoSuchElementException {
+        for (int i = 0; i < vector.size(); i++) {
+            if (vector.get(i).node.getData() == data)
+                return i;
+        }
+        throw new NoSuchElementException("Could not find node '" + data + "'.");
+    }
 
-        public ParentVectorEntry(KeyNode<T> node, int parentIndex) {
+    /**
+     * This inner class is used as a record by the {@link ParentVector} class to associate each node
+     * with its parent index.
+     */
+    private class ParentVectorEntry {
+        Node<T> node;
+        Integer parentIndex;
+
+        public ParentVectorEntry(Node<T> node, Integer parentIndex) {
             this.node = node;
             this.parentIndex = parentIndex;
         }

@@ -1,6 +1,6 @@
 package bst.avl;
 
-import tree.KeyNode;
+import bst.KeyNode;
 
 import java.util.Objects;
 

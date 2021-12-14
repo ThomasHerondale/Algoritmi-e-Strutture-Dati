@@ -1,4 +1,6 @@
-package tree;
+package bst;
+
+import tree.Node;
 
 import java.util.Objects;
 

@@ -1,14 +1,11 @@
 package bst;
 
-import tree.KeyNode;
-import tree.Tree;
-
 import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @SuppressWarnings("UnusedReturnValue")
-public class BinarySearchTree<T> implements Tree<T> {
+public class BinarySearchTree<T> implements KeyTree<T> {
     private KeyNode<T> root;
 
     public BinarySearchTree(int key, T data) {
