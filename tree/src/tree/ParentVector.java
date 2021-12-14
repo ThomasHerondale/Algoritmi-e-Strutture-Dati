@@ -4,13 +4,17 @@ import java.util.*;
 
 /**
  * This class provides a basic implementation to the {@link Tree} interface, using the parents vector method.
- * This particular implementation is only useful to the making of read-only trees, as the insertion and removal of
+ * This particular implementation is only useful to the making of read-only m-ary trees, as the insertion and removal of
  * any node will result in throwing an {@link java.lang.UnsupportedOperationException}.
  * @param <T> the type of the data contained in the nodes
  */
 public class ParentVector<T> implements Tree<T> {
     /**
-     * The list actually representing the parents vector.
+     * The list actually representing the parents vector. This list is passed to {@link Collections#unmodifiableList(List)}
+     * at creation time, hence it is not editable in any way; an attempt to modify such list may result in
+     * an {@link UnsupportedOperationException} due to a call to the {@link ParentVector#insert} and
+     * {@link ParentVector#delete} methods of this class, or in an {@link UnsupportedOperationException} being thrown
+     * as per the {@link Collections#unmodifiableList(List)} specification.
      */
     private List<ParentVectorEntry> vector;
 
@@ -99,7 +103,7 @@ public class ParentVector<T> implements Tree<T> {
      */
     private int find(T data) throws NoSuchElementException {
         for (int i = 0; i < vector.size(); i++) {
-            if (vector.get(i).node.getData() == data)
+            if (vector.get(i).node.getData().equals(data))
                 return i;
         }
         throw new NoSuchElementException("Could not find node '" + data + "'.");
