@@ -17,7 +17,6 @@ public class ParentVector<T> implements Tree<T> {
      * as per the {@link Collections#unmodifiableList(List)} specification.
      */
     private List<ParentVectorEntry> vector;
-
     /**
      * Constructs a parents vector matching every node with the index of its parent, following the same
      * order for the two lists.
@@ -70,7 +69,12 @@ public class ParentVector<T> implements Tree<T> {
         }
     }
 
-    @Override
+    /**
+     * Returns a list containing all the children of the node designated by the specified information.
+     * @param parentData the information contained in the node
+     * @return a {@link List} containing all the children of the specified node
+     * @throws NoSuchElementException if no node containing the specified information is present
+     */
     public List<Node<T>> findChildren(T parentData) throws NoSuchElementException {
         var children = new ArrayList<Node<T>>();
         var parentIndex = find(parentData);
@@ -83,7 +87,13 @@ public class ParentVector<T> implements Tree<T> {
         return children;
     }
 
-    @Override
+    /**
+     * Searches for the parent of the node containing the specified information.
+     * @param childData the information contained in the node
+     * @return an {@link Optional} containing the parent of the specified node, or an empty
+     * {@link Optional} if the specified information was contained in the root
+     * @throws NoSuchElementException if no node containing the specified information is present
+     */
     public Optional<Node<T>> findParent(T childData) throws NoSuchElementException {
         var index = find(childData);
         ParentVectorEntry child = vector.get(index);

@@ -41,21 +41,4 @@ public interface Tree<T> {
      * implementation-dependent and may vary consistently from one implementation to another.
      */
     void print();
-
-    /**
-     * Returns a list containing all the children of the node designated by the specified information.
-     * @param parentData the information contained in the node
-     * @return a {@link List} containing all the children of the specified node
-     * @throws NoSuchElementException if no node containing the specified information is present
-     */
-    List<Node<T>> findChildren(T parentData) throws NoSuchElementException;
-
-    /**
-     * Searches for the parent of the node containing the specified information.
-     * @param childData the information contained in the node
-     * @return an {@link Optional} containing the parent of the specified node, or an empty
-     * {@link Optional} if the specified information was contained in the root
-     * @throws NoSuchElementException if no node containing the specified information is present
-     */
-    Optional<Node<T>> findParent(T childData) throws NoSuchElementException;
 }
