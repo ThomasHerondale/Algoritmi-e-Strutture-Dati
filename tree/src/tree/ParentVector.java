@@ -23,8 +23,8 @@ public class ParentVector<T> implements Tree<T> {
      * @param nodeList the list containing all the nodes of the vector
      * @param parentlist the list containing the indexes of every parent of the nodes
      * @throws IllegalArgumentException if the two lists differ in size
-     * @implNote Note that the root of the tree should be located at the first index of the list. This
-     * is not mandatory, but strongly recommended. The {@link Integer} index associated with such root must be
+     * @implSpec Note that the root of the tree should be located at the first index of the list. This
+     * is not mandatory, but strongly recommended. The {@code Integer} index associated with such root must be
      * set to null
      */
     public ParentVector(List<Node<T>> nodeList, List<Integer> parentlist) throws IllegalArgumentException {
