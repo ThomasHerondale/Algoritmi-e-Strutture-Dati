@@ -131,38 +131,52 @@ public class LinkedBinaryTree<T> implements Tree<T> {
      */
     @Override
     public Node<T> delete(T data) throws UnsupportedOperationException, NoSuchElementException {
-        var node = search(data).orElseThrow(UnsupportedOperationException::new);
+        var node = search(data).orElseThrow(NoSuchElementException::new);
         if (node instanceof LinkedBinaryNode<T> toDelete) {
             switch (deleteMode) {
                 case UNSUPPORTED -> throw new UnsupportedOperationException(
                         "Delete mode is set to UNSUPPORTED for this tree.");
                 case LEAVES_ONLY -> {
                     if (toDelete.getSx() != null || toDelete.getDx() != null)
-                            throw new UnsupportedOperationException("Delete mode is set to LEAF_ONLY: attempt to" +
-                                    " delete a non-leaf node.");
-                        else
-                            deleteHelper(toDelete);
+                        throw new UnsupportedOperationException("Delete mode is set to LEAF_ONLY: attempt to" +
+                                " delete a non-leaf node.");
+                    else
+                        deleteHelper(toDelete);
                 }
                 case CHILDREN_TO_RANDOM -> {
-                        var sx = toDelete.getSx();
-                        var dx = toDelete.getDx();
-                        deleteHelper(toDelete);
+                    var sx = toDelete.getSx();
+                    var dx = toDelete.getDx();
+                    deleteHelper(toDelete);
+                    if (sx != null)
                         insert(sx.getData());
+                    if (dx != null)
                         insert(dx.getData());
-                    }
+                }
                 case SUBTREE -> deleteHelper(toDelete);
             }
         } else
             throw new ClassCastException("Node to delete is not an instance of " + LinkedBinaryNode.class);
+        // This should never be reached
         return null;
     }
 
-    private void deleteHelper(LinkedBinaryNode<T> toDelete) {
+    private void deleteHelper(LinkedBinaryNode<T> toDelete)
+            throws UnsupportedOperationException, IllegalArgumentException, IllegalStateException {
         var parent = findParent(toDelete);
-        if (parent.getDx() == toDelete)
-            parent.setDx(null);
-        else
-            parent.setSx(null);
+        if (parent != null) {
+            if (parent.getDx() == toDelete)
+                parent.setDx(null);
+            else
+                parent.setSx(null);
+        } else {
+            if (deleteMode == TreeDeleteMode.LEAVES_ONLY)
+                throw new UnsupportedOperationException("Delete mode is set to LEAF_ONLY: attempt to" +
+                        " delete a non-leaf node.");
+            else if (deleteMode == TreeDeleteMode.SUBTREE)
+                throw new IllegalArgumentException("Delete mode is set to SUBTREE: attempt to delete the root node.");
+            else
+                throw new IllegalStateException("Could not find parent of node " + toDelete);
+        }
     }
 
     @Override
@@ -224,6 +238,6 @@ public class LinkedBinaryTree<T> implements Tree<T> {
                 stack.push(current.getDx());
             }
         }
-        throw new IllegalStateException("Unable to find parent of leaf node.");
+        return null;
     }
 }

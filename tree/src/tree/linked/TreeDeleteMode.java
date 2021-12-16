@@ -21,7 +21,9 @@ public enum TreeDeleteMode {
      */
     CHILDREN_TO_RANDOM,
     /**
-     * Sets the {@link Tree#delete(Object)} method to delete the specified node and all of its subtree.
+     * Sets the {@link Tree#delete(Object)} method to delete the specified node and all of its subtree. Note that
+     * if this is the currently selected behavior, any attempt to delete the root node will result
+     * in an {@link IllegalArgumentException}.
      */
     SUBTREE;
 }

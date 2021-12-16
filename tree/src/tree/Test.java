@@ -9,8 +9,11 @@ public class Test {
         tree.insert('B');
         tree.insert('C');
         tree.insert('D');
-        tree.setDeleteMode(TreeDeleteMode.LEAVES_ONLY);
-        tree.delete('A');
+        tree.insert('E');
+        tree.insert('F');
+        tree.insert('G');
+        tree.setDeleteMode(TreeDeleteMode.CHILDREN_TO_RANDOM);
+        tree.delete('B');
         tree.print();
     }
 }
