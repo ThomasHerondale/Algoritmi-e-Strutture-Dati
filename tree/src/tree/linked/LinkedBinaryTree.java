@@ -128,9 +128,12 @@ public class LinkedBinaryTree<T> implements Tree<T> {
      * {@link TreeDeleteMode#UNSUPPORTED}, or in case of attempt of removal of a non-leaf node whilst
      * {@code deleteMode} is set to {@link TreeDeleteMode#LEAVES_ONLY}
      * @throws NoSuchElementException if no node containing the specified information is present
+     * @throws IllegalArgumentException in case of attempt of removal of the root node of this tree whilst the
+     * {@code deleteMode} of this tree is set to {@link TreeDeleteMode#SUBTREE}
      */
     @Override
-    public Node<T> delete(T data) throws UnsupportedOperationException, NoSuchElementException {
+    public Node<T> delete(T data)
+            throws UnsupportedOperationException, NoSuchElementException, IllegalArgumentException {
         var node = search(data).orElseThrow(NoSuchElementException::new);
         if (node instanceof LinkedBinaryNode<T> toDelete) {
             switch (deleteMode) {
