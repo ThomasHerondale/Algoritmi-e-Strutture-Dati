@@ -38,4 +38,20 @@ public class Sorter {
             array[minimum] = temp;
         }
     }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static void bubbleSort(Object[] array) throws ClassCastException {
+        boolean swapHappened;
+        do {
+            swapHappened = false;
+            for (var i = 0; i < array.length - 1; i++) {
+                Comparable current = (Comparable) array[i];
+                if (current.compareTo(array[i + 1]) > 0) {
+                    array[i] = array[i + 1];
+                    array[i + 1] = current;
+                    swapHappened = true;
+                }
+            }
+        } while (swapHappened);
+    }
 }
