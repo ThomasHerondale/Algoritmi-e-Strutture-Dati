@@ -24,4 +24,18 @@ public class Sorter {
             array[j] = current;
         }
     }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static void selectionSort(Object[] array) throws ClassCastException {
+        for (var i = 0; i < array.length; i++) {
+            var minimum = i;
+            for (var j = i + 1; j < array.length; j++) {
+                if (((Comparable) array[minimum]).compareTo(array[j]) > 0)
+                    minimum = j;
+            }
+            var temp = array[i];
+            array[i] = array[minimum];
+            array[minimum] = temp;
+        }
+    }
 }
