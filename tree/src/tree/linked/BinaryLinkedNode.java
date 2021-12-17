@@ -9,22 +9,22 @@ import tree.Node;
  * the absence of such left or right child.
  * @param <T> the type of the data contained in the node
  */
-public class LinkedBinaryNode<T> extends Node<T> {
+public class BinaryLinkedNode<T> extends Node<T> {
     /**
      * The left child of this node.
      */
-    private LinkedBinaryNode<T> sx;
+    private BinaryLinkedNode<T> sx;
     /**
      * The right child of this node.
      */
-    private LinkedBinaryNode<T> dx;
+    private BinaryLinkedNode<T> dx;
 
     /**
      * Constructs a node with no children containing the sepcified data.
      *
      * @param data the information to be stored in the node
      */
-    public LinkedBinaryNode(T data) {
+    public BinaryLinkedNode(T data) {
         super(data);
         this.sx = null;
         this.dx = null;
@@ -34,7 +34,7 @@ public class LinkedBinaryNode<T> extends Node<T> {
      * Returns the left child of this node.
      * @return a reference to the left child of this node
      */
-    public LinkedBinaryNode<T> getSx() {
+    public BinaryLinkedNode<T> getSx() {
         return sx;
     }
 
@@ -42,7 +42,7 @@ public class LinkedBinaryNode<T> extends Node<T> {
      * Changes the left child of this node to the specified one.
      * @param sx the node that will become the left child of this node
      */
-    public void setSx(LinkedBinaryNode<T> sx) {
+    public void setSx(BinaryLinkedNode<T> sx) {
         this.sx = sx;
     }
 
@@ -50,7 +50,7 @@ public class LinkedBinaryNode<T> extends Node<T> {
      * Returns the right child of this node.
      * @return a reference to the right child of this node
      */
-    public LinkedBinaryNode<T> getDx() {
+    public BinaryLinkedNode<T> getDx() {
         return dx;
     }
 
@@ -58,7 +58,7 @@ public class LinkedBinaryNode<T> extends Node<T> {
      * Changes the right child of this node to the specified one.
      * @param dx the node that will become the right child of this node
      */
-    public void setDx(LinkedBinaryNode<T> dx) {
+    public void setDx(BinaryLinkedNode<T> dx) {
         this.dx = dx;
     }
 }

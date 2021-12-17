@@ -14,11 +14,11 @@ import java.util.Optional;
  * still provides a more specific linked implementation.
  * @param <T> the type of the data contained in the nodes
  */
-public class LinkedBinaryTree<T> implements Tree<T> {
+public class BinaryLinkedTree<T> implements Tree<T> {
     /**
      * The root node of this tree.
      */
-    private final LinkedBinaryNode<T> root;
+    private final BinaryLinkedNode<T> root;
     /**
      * The behaviour of the {@link Tree#delete(Object)} method of this tree.
      */
@@ -27,12 +27,12 @@ public class LinkedBinaryTree<T> implements Tree<T> {
     /**
      * Constructs a {@code LinkedBinaryTree} only composed of a root node containing the specified data.
      * @param data the data that will be contained by the root of this tree
-     * @implNote This constructor sets the {@link LinkedBinaryTree#deleteMode} of this tree to
+     * @implNote This constructor sets the {@link BinaryLinkedTree#deleteMode} of this tree to
      * {@link TreeDeleteMode#UNSUPPORTED}, meaning that the attempt to delete any node in this tree will result
      * in an {@link UnsupportedOperationException}. This behavior may be modified calling the
-     * {@link LinkedBinaryTree#setDeleteMode(TreeDeleteMode)} method
+     * {@link BinaryLinkedTree#setDeleteMode(TreeDeleteMode)} method
      */
-    public LinkedBinaryTree(T data) {
+    public BinaryLinkedTree(T data) {
         this(data, TreeDeleteMode.UNSUPPORTED);
     }
 
@@ -42,8 +42,8 @@ public class LinkedBinaryTree<T> implements Tree<T> {
      * @param data the data that will be contained by the root of this tree
      * @param deleteMode the behaviour of the {@code delete(Object)} method of this tree
      */
-    public LinkedBinaryTree(T data, TreeDeleteMode deleteMode) {
-        this.root = new LinkedBinaryNode<>(data);
+    public BinaryLinkedTree(T data, TreeDeleteMode deleteMode) {
+        this.root = new BinaryLinkedNode<>(data);
         this.deleteMode = deleteMode;
     }
 
@@ -51,7 +51,7 @@ public class LinkedBinaryTree<T> implements Tree<T> {
      * Returns the root node of this tree.
      * @return the root of this tree.
      */
-    public LinkedBinaryNode<T> getRoot() {
+    public BinaryLinkedNode<T> getRoot() {
         return root;
     }
 
@@ -67,12 +67,13 @@ public class LinkedBinaryTree<T> implements Tree<T> {
      * Creates and inserts a node containing the specified information in this tree, as a leaf node.
      * @param data the information that will be contained in the inserted node
      * @implNote Note that this method is not the recommended way of adding a specific node a child of a specific
-     * parent node. For this purpose, the method {@link LinkedBinaryTree#insertChild(Object, Object)} should
-     * be used. Note also that there is no assurance that the node will be inserted as the deepest leaf of the tree
+     * parent node. For this purpose, the method {@link BinaryLinkedTree#insertChild(Object, Object)} should
+     * be used.
+     * Also note that there is no assurance that the node will be inserted as the deepest leaf of the tree
      */
     @Override
     public void insert(T data) {
-        Deque<LinkedBinaryNode<T>> stack = new ArrayDeque<>();
+        Deque<BinaryLinkedNode<T>> stack = new ArrayDeque<>();
         stack.push(root);
         // in-depth visit
         while (!stack.isEmpty()) {
@@ -80,13 +81,13 @@ public class LinkedBinaryTree<T> implements Tree<T> {
             if (current.getSx() != null)
                 stack.push(current.getSx());
             else {
-                current.setSx(new LinkedBinaryNode<>(data));
+                current.setSx(new BinaryLinkedNode<>(data));
                 return;
             }
             if (current.getDx() != null)
                 stack.push(current.getDx());
             else {
-                current.setDx(new LinkedBinaryNode<>(data));
+                current.setDx(new BinaryLinkedNode<>(data));
                 return;
             }
         }
@@ -108,20 +109,20 @@ public class LinkedBinaryTree<T> implements Tree<T> {
      */
     public void insertChild(T parentData, T childData) throws NoSuchElementException, IllegalArgumentException {
         var node = search(parentData).orElseThrow(NoSuchElementException::new);
-        if (node instanceof LinkedBinaryNode<T> parent) {
+        if (node instanceof BinaryLinkedNode<T> parent) {
             if (parent.getSx() == null)
-                parent.setSx(new LinkedBinaryNode<>(childData));
+                parent.setSx(new BinaryLinkedNode<>(childData));
             else if (parent.getDx() == null)
-                parent.setDx(new LinkedBinaryNode<>(childData));
+                parent.setDx(new BinaryLinkedNode<>(childData));
             else
                 throw new IllegalArgumentException("Designed parent '" + parent + "' already has two children.");
         } else
-            throw new ClassCastException("Parent node is not an instance of " + LinkedBinaryNode.class);
+            throw new ClassCastException("Parent node is not an instance of " + BinaryLinkedNode.class);
     }
 
     /**
      * Deletes the node containing the specified information from this tree, according to the behavior specified
-     * by the {@link LinkedBinaryTree#deleteMode} member.
+     * by the {@link BinaryLinkedTree#deleteMode} member.
      * @param data the information contained in the node to remove
      * @return the eventual deleted node
      * @throws UnsupportedOperationException if the {@code deleteMode} of this tree is set to
@@ -135,7 +136,7 @@ public class LinkedBinaryTree<T> implements Tree<T> {
     public Node<T> delete(T data)
             throws UnsupportedOperationException, NoSuchElementException, IllegalArgumentException {
         var node = search(data).orElseThrow(NoSuchElementException::new);
-        if (node instanceof LinkedBinaryNode<T> toDelete) {
+        if (node instanceof BinaryLinkedNode<T> toDelete) {
             switch (deleteMode) {
                 case UNSUPPORTED -> throw new UnsupportedOperationException(
                         "Delete mode is set to UNSUPPORTED for this tree.");
@@ -158,12 +159,12 @@ public class LinkedBinaryTree<T> implements Tree<T> {
                 case SUBTREE -> deleteHelper(toDelete);
             }
         } else
-            throw new ClassCastException("Node to delete is not an instance of " + LinkedBinaryNode.class);
+            throw new ClassCastException("Node to delete is not an instance of " + BinaryLinkedNode.class);
         // This should never be reached
         return null;
     }
 
-    private void deleteHelper(LinkedBinaryNode<T> toDelete)
+    private void deleteHelper(BinaryLinkedNode<T> toDelete)
             throws UnsupportedOperationException, IllegalArgumentException, IllegalStateException {
         var parent = findParent(toDelete);
         if (parent != null) {
@@ -184,7 +185,7 @@ public class LinkedBinaryTree<T> implements Tree<T> {
 
     @Override
     public Optional<Node<T>> search(T data) {
-        Deque<LinkedBinaryNode<T>> stack = new ArrayDeque<>();
+        Deque<BinaryLinkedNode<T>> stack = new ArrayDeque<>();
         stack.push(root);
         if (root.getData().equals(data))
             return Optional.of(root);
@@ -207,7 +208,7 @@ public class LinkedBinaryTree<T> implements Tree<T> {
 
     @Override
     public void print() {
-        Deque<LinkedBinaryNode<T>> stack = new ArrayDeque<>();
+        Deque<BinaryLinkedNode<T>> stack = new ArrayDeque<>();
         System.out.println("Root node is " + root);
         stack.push(root);
         // in-depth visit
@@ -224,8 +225,8 @@ public class LinkedBinaryTree<T> implements Tree<T> {
         }
     }
 
-    private LinkedBinaryNode<T> findParent(LinkedBinaryNode<T> childNode) {
-        Deque<LinkedBinaryNode<T>> stack = new ArrayDeque<>();
+    private BinaryLinkedNode<T> findParent(BinaryLinkedNode<T> childNode) {
+        Deque<BinaryLinkedNode<T>> stack = new ArrayDeque<>();
         stack.push(root);
         // in-depth visit
         while (!stack.isEmpty()) {

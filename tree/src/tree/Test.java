@@ -1,11 +1,11 @@
 package tree;
 
-import tree.linked.LinkedBinaryTree;
+import tree.linked.BinaryLinkedTree;
 import tree.linked.TreeDeleteMode;
 
 public class Test {
     public static void main(String[] args) {
-        LinkedBinaryTree<Character> tree = new LinkedBinaryTree<>('A');
+        BinaryLinkedTree<Character> tree = new BinaryLinkedTree<>('A');
         tree.insert('B');
         tree.insert('C');
         tree.insert('D');
