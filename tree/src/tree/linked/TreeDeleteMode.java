@@ -17,10 +17,6 @@ public enum TreeDeleteMode {
      */
     LEAVES_ONLY,
     /**
-     * Sets the {@link Tree#delete(Object)} method to delete the specified node and reassigns any children to other random node(s) in the tree.
-     */
-    CHILDREN_TO_RANDOM,
-    /**
      * Sets the {@link Tree#delete(Object)} method to delete the specified node and all of its subtree. Note that
      * if this is the currently selected behavior, any attempt to delete the root node will result
      * in an {@link IllegalArgumentException}.

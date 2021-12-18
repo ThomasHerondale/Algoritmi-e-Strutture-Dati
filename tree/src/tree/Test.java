@@ -1,19 +1,19 @@
 package tree;
 
-import tree.linked.BinaryLinkedTree;
+
+import tree.linked.SimpleLinkedTree;
 import tree.linked.TreeDeleteMode;
 
 public class Test {
     public static void main(String[] args) {
-        BinaryLinkedTree<Character> tree = new BinaryLinkedTree<>('A');
+        SimpleLinkedTree<Character> tree = new SimpleLinkedTree<>('A');
         tree.insert('B');
         tree.insert('C');
-        tree.insert('D');
-        tree.insert('E');
+        tree.insertChild('C', 'D');
         tree.insert('F');
-        tree.insert('G');
-        tree.setDeleteMode(TreeDeleteMode.CHILDREN_TO_RANDOM);
-        tree.delete('B');
+        tree.insert('C');
+        tree.setDeleteMode(TreeDeleteMode.LEAVES_ONLY);
+        tree.delete('C');
         tree.print();
     }
 }

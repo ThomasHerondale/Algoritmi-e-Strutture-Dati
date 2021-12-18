@@ -2,13 +2,14 @@ package tree.linked;
 
 import tree.Node;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LinkedNode<T> extends Node<T> {
     /**
      * The list containing all the children of this node.
      */
-    private List<LinkedNode<T>> children;
+    private final List<LinkedNode<T>> children;
 
     /**
      * Constructs a node with the specified data.
@@ -17,6 +18,7 @@ public class LinkedNode<T> extends Node<T> {
      */
     public LinkedNode(T data) {
         super(data);
+        this.children = new ArrayList<>();
     }
 
     /**

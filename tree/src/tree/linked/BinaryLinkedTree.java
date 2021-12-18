@@ -147,15 +147,6 @@ public class BinaryLinkedTree<T> implements Tree<T> {
                     else
                         deleteHelper(toDelete);
                 }
-                case CHILDREN_TO_RANDOM -> {
-                    var sx = toDelete.getSx();
-                    var dx = toDelete.getDx();
-                    deleteHelper(toDelete);
-                    if (sx != null)
-                        insert(sx.getData());
-                    if (dx != null)
-                        insert(dx.getData());
-                }
                 case SUBTREE -> deleteHelper(toDelete);
             }
         } else
