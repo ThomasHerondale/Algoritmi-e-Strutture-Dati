@@ -1,5 +1,7 @@
 package sorting;
 
+import java.util.Arrays;
+
 public class Sorter {
     /**
      * Don't let anyone instantiate this class.
@@ -53,5 +55,53 @@ public class Sorter {
                 }
             }
         } while (swapHappened);
+    }
+
+    public static void mergeSort(Object[] array) throws ClassCastException {
+        mergeSort(array, 0, array.length - 1);
+    }
+
+    private static void mergeSort(Object[] array, int f, int l) {
+        if (f >= l)
+            return;
+        int mid = (f + l) / 2;
+        mergeSort(array, f, mid);
+        mergeSort(array, mid + 1, l);
+        merge(array, f, mid + 1, l);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static void merge(Object[] array, int f1, int l1, int l2) {
+        int start = f1;
+        int f2 = l1 + 1;
+        int mergePtr = 0;
+        Object[] aux = new Object[l2 - f1];
+        Arrays.fill(aux, -1);
+        while (f1 <= l1 && f2 <= l2) {
+            if (((Comparable) array[f1]).compareTo(array[f2]) >= 0) {
+                aux[mergePtr] = array[f1];
+                f1++;
+            } else {
+                aux[mergePtr] = array[f2];
+                f2++;
+            }
+            mergePtr++;
+        }
+        while (f1 < l1) {
+            aux[mergePtr] = array[f1];
+            f1++;
+            mergePtr++;
+        }
+        while (f2 < l2) {
+            aux[mergePtr] = array[f2];
+            f2++;
+            mergePtr++;
+        }
+        int auxPtr = 0;
+        while (start < aux.length) {
+            array[start] = aux[auxPtr];
+            auxPtr++;
+            start++;
+        }
     }
 }

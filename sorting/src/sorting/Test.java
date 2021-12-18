@@ -8,7 +8,7 @@ public class Test {
                 11, 9, 4, 6, 2, 1, 1, 1, 4, 13, 9, 12, 11, 9, 3, 3, 0, 6
         };
         System.out.println(Arrays.toString(array));
-        Sorter.bubbleSort(array);
+        Sorter.mergeSort(array);
         System.out.println(Arrays.toString(array));
     }
 
