@@ -1,7 +1,5 @@
 package sorting;
 
-import java.util.Arrays;
-
 public class Sorter {
     /**
      * Don't let anyone instantiate this class.
@@ -86,20 +84,18 @@ public class Sorter {
             }
             mergePtr++;
         }
-        while (f1 < l1) {
+        while (f1 <= l1) {
             aux[mergePtr] = array[f1];
             f1++;
             mergePtr++;
         }
-        while (f2 < l2) {
+        while (f2 <= l2) {
             aux[mergePtr] = array[f2];
             f2++;
             mergePtr++;
         }
-        int auxPtr = 0;
-        while (start < aux.length) {
-            array[start] = aux[auxPtr];
-            auxPtr++;
+        for (var o : aux) {
+            array[start] = o;
             start++;
         }
     }
