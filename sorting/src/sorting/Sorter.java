@@ -67,7 +67,7 @@ public class Sorter {
         int mid = (f + l) / 2;
         mergeSort(array, f, mid);
         mergeSort(array, mid + 1, l);
-        merge(array, f, mid + 1, l);
+        merge(array, f, mid, l);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -75,10 +75,9 @@ public class Sorter {
         int start = f1;
         int f2 = l1 + 1;
         int mergePtr = 0;
-        Object[] aux = new Object[l2 - f1];
-        Arrays.fill(aux, -1);
+        Object[] aux = new Object[l2 - f1 + 1];
         while (f1 <= l1 && f2 <= l2) {
-            if (((Comparable) array[f1]).compareTo(array[f2]) >= 0) {
+            if (((Comparable) array[f1]).compareTo(array[f2]) <= 0) {
                 aux[mergePtr] = array[f1];
                 f1++;
             } else {
