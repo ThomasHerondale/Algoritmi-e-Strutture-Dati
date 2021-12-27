@@ -1,7 +1,6 @@
 package tree;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * This class provides a basic implementation to the {@link Tree} interface, using the parents vector method.
@@ -104,27 +103,6 @@ public class ParentVector<T> implements Tree<T> {
         }
         else
             return Optional.empty();
-    }
-
-    /**
-     * Scans systematically every node in this tree, hence performing the given action on every node in this tree.
-     * This search is intended for reaching the deppest leaf in this tree before everything else, and trying to do
-     * the same for every given subtree.
-     * @param action the action to be performed on every node at scan time
-     */
-    public void depthFirstSearch(Consumer<Node<T>> action) {
-        // TODO: attualmente basato sui figli della radice: sensato SOLO SE l'albero è completo, modificare
-        int childNumber = findChildren(vector.get(0).node.getData()).size();
-        depthFirstSearch(action, childNumber, 0);
-    }
-
-    private void depthFirstSearch(Consumer<Node<T>> action, int m, int pointer) {
-        if (pointer >= vector.size())
-            return;
-        action.accept(vector.get(pointer).node);
-        for (var i = 1; i <= m; i++) {
-            depthFirstSearch(action, m, pointer * m + i);
-        }
     }
 
     /**
