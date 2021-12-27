@@ -1,6 +1,7 @@
 package tree;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * This class provides a basic implementation to the {@link Tree} interface, using the parents vector method.
@@ -104,6 +105,33 @@ public class ParentVector<T> implements Tree<T> {
         else
             return Optional.empty();
     }
+
+    public void depthFirstSearch(Consumer<Node<T>> action) {
+        // TODO: attualmente basato sui figli della radice: sensato SOLO SE l'albero è completo, modificare
+        int childNumber = findChildren(vector.get(0).node.getData()).size();
+        depthFirstSearch(action, childNumber, 0);
+    }
+
+    private void depthFirstSearch(Consumer<Node<T>> action, int m, int pointer) {
+        if (pointer >= vector.size())
+            return;
+        action.accept(vector.get(pointer).node);
+        for (var i = m; i > 0; i--) {
+            depthFirstSearch(action, m, pointer * m + i);
+        }
+    }
+
+    /**
+     * function DepthFirstScan(Array tree, int d)
+     * DepthFirstScan(tree, d, 0)
+     *
+     * function DepthFirstScan(Array tree, int d, int pointer)
+     * if (pointer >= tree.length)
+     * return
+     * Scan tree[pointer]
+     * for i from d downto 1
+     * DepthFirstScan(tree, d, pointer * d + i)
+     */
 
     /**
      * Returns the index of the node containing the specified information in {@link ParentVector#vector}.
