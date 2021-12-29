@@ -1,5 +1,7 @@
 package sorting;
 
+import java.util.Random;
+
 public class Sorter {
     /**
      * Don't let anyone instantiate this class.
@@ -7,6 +9,7 @@ public class Sorter {
     private Sorter() {
 
     }
+    private static Random rng = null;
 
     @SuppressWarnings({"rawtypes", "unchecked", "ManualArrayCopy"})
     public static void insertionSort(Object[] array) throws ClassCastException {
@@ -59,7 +62,7 @@ public class Sorter {
         mergeSort(array, 0, array.length - 1);
     }
 
-    private static void mergeSort(Object[] array, int f, int l) {
+    private static void mergeSort(Object[] array, int f, int l) throws ClassCastException {
         if (f >= l)
             return;
         int mid = (f + l) / 2;
@@ -69,7 +72,7 @@ public class Sorter {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static void merge(Object[] array, int f1, int l1, int l2) {
+    private static void merge(Object[] array, int f1, int l1, int l2) throws ClassCastException {
         int start = f1;
         int f2 = l1 + 1;
         int mergePtr = 0;
@@ -98,5 +101,49 @@ public class Sorter {
             array[start] = o;
             start++;
         }
+    }
+
+    public static void quickSort(Object[] array) throws ClassCastException {
+        quickSort(array, 0, array.length - 1);
+    }
+
+    private static void quickSort(Object[] array, int i, int l) {
+        if (i >= l)
+            return;
+        var rng = getRNG();
+        var pivot = rng.nextInt(i, l);
+        var m = partition(array, i, l);
+        quickSort(array, i, m - 1);
+        quickSort(array, m + 1, l);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static int partition(Object[] array, int i, int l) {
+        var inf = i;
+        var sup = l + 1;
+        while (true) {
+            do {
+                inf++;
+            } while (inf <= l && ((Comparable) array[inf]).compareTo(array[i]) < 0);
+            do {
+                sup--;
+            } while (((Comparable) array[sup]).compareTo(array[i]) > 0);
+            if (inf < sup) {
+                var temp = array[inf];
+                array[inf] = array[sup];
+                array[sup] = temp;
+            } else
+                break;
+        }
+        var temp = array[sup];
+        array[sup] = array[i];
+        array[i] = temp;
+        return sup;
+    }
+
+    private static Random getRNG() {
+        if (rng == null)
+            rng = new Random();
+        return rng;
     }
 }
