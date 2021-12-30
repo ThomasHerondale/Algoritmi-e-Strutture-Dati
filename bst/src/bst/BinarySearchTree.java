@@ -5,27 +5,46 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @SuppressWarnings("UnusedReturnValue")
-public class BinarySearchTree<T> {
-    private Node<T> root;
+public class BinarySearchTree<T> implements KeyTree<T> {
+    private KeyNode<T> root;
 
     public BinarySearchTree(int key, T data) {
-        this.root = new Node<>(key, data);
+        this.root = new KeyNode<>(key, data);
     }
 
-    public void insert(Node<T> newNode) {
+    protected BinarySearchTree(KeyNode<T> root) {
+        this.root = root;
+    }
+
+    protected KeyNode<T> getRoot() {
+        return root;
+    }
+
+    protected void setRoot(KeyNode<T> root) {
+        this.root = root;
+    }
+
+    @Override
+    public void insert(int key, T data) {
+        insert(new KeyNode<>(key, data));
+    }
+
+    // Ritorna il padre del nuovo nodo (l'unico nodo che questo metodo modifica)
+    public KeyNode<T> insert(KeyNode<T> newNode) {
         var parent = findParent(newNode);
         assert parent != null;
         if (newNode.getKey() <= parent.getKey())
             parent.setSx(newNode);
         else
             parent.setDx(newNode);
+        return parent;
     }
 
-    private Node<T> findParent(Node<T> childNode) {
+    protected KeyNode<T> findParent(KeyNode<T> childNode) {
         return findParent(childNode, root);
     }
 
-    private Node<T> findParent(Node<T> childNode, Node<T> currentNode) {
+    protected KeyNode<T> findParent(KeyNode<T> childNode, KeyNode<T> currentNode) {
         if (childNode == root)
             return null;
         if (childNode.getKey() <= currentNode.getKey()) {
@@ -41,13 +60,13 @@ public class BinarySearchTree<T> {
         }
     }
 
-    // Ritorna il nodo appena cancellato
-    public Node<T> delete(int key) {
+    @Override
+    public KeyNode<T> delete(int key) throws NoSuchElementException {
         var toDeleteOpt = search(key);
         return delete(toDeleteOpt.orElseThrow(NoSuchElementException::new));
     }
 
-    private Node<T> leafDelete(Node<T> toDelete) {
+    private KeyNode<T> leafDelete(KeyNode<T> toDelete) {
         var parent = findParent(toDelete);
         // Non possiamo cancellare la radice dentro al metodo che cancella foglie!
         assert parent != null;
@@ -59,7 +78,7 @@ public class BinarySearchTree<T> {
         return toDelete;
     }
 
-    private Node<T> delete(Node<T> toDelete) {
+    protected KeyNode<T> delete(KeyNode<T> toDelete) {
         if (toDelete.childrenCount() == 0)
             return leafDelete(toDelete);
         else if (toDelete.childrenCount() == 1) {
@@ -86,12 +105,12 @@ public class BinarySearchTree<T> {
         }
     }
 
-    private Node<T> previous(Node<T> node) {
+    private KeyNode<T> previous(KeyNode<T> node) {
         if (node.getSx() != null)
             return maximum(node.getSx());
         else {
             var currentNode = findParent(node);
-            Node<T> parent;
+            KeyNode<T> parent;
             while ((parent = findParent(currentNode)) != null && currentNode != parent.getSx()) {
                 currentNode = findParent(currentNode);
             }
@@ -100,18 +119,19 @@ public class BinarySearchTree<T> {
     }
 
     // root è la radice del sottoalbero di cui si cerca il massimo
-    private Node<T> maximum(Node<T> root) {
+    private KeyNode<T> maximum(KeyNode<T> root) {
         while (root.getDx() != null)
             root = root.getDx();
         return root;
     }
 
-    private void copy(Node<T> source, Node<T> target) {
+    private void copy(KeyNode<T> source, KeyNode<T> target) {
         target.setKey(source.getKey());
         target.setData(source.getData());
     }
 
-    public Optional<Node<T>> search(int key) {
+    @Override
+    public Optional<KeyNode<T>> search(int key) {
         var currentNode = root;
         while (currentNode != null) {
             if (currentNode.getKey() == key)
@@ -125,7 +145,7 @@ public class BinarySearchTree<T> {
     }
 
     public void print() {
-        var stack = new ArrayDeque<Node<T>>();
+        var stack = new ArrayDeque<KeyNode<T>>();
         stack.push(root);
 
         while (!stack.isEmpty()) {

@@ -1,3 +1,3 @@
 module bst {
-
+    requires tree;
 }

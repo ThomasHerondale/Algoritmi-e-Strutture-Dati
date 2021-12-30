@@ -1,17 +1,18 @@
 package bst;
 
+import tree.Node;
+
 import java.util.Objects;
 
-public class Node<T> {
+public class KeyNode<T> extends Node<T> {
     private int key;
-    private T data;
     // Parent?
-    private Node<T> sx;
-    private Node<T> dx;
+    private KeyNode<T> sx;
+    private KeyNode<T> dx;
 
-    public Node(int key, T data) {
+    public KeyNode(int key, T data) {
+        super(data);
         this.key = key;
-        this.data = data;
     }
 
     public int getKey() {
@@ -22,27 +23,19 @@ public class Node<T> {
         this.key = key;
     }
 
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    public Node<T> getSx() {
+    public KeyNode<T> getSx() {
         return sx;
     }
 
-    public void setSx(Node<T> sx) {
+    public void setSx(KeyNode<T> sx) {
         this.sx = sx;
     }
 
-    public Node<T> getDx() {
+    public KeyNode<T> getDx() {
         return dx;
     }
 
-    public void setDx(Node<T> dx) {
+    public void setDx(KeyNode<T> dx) {
         this.dx = dx;
     }
 
@@ -55,7 +48,7 @@ public class Node<T> {
         return counter;
     }
 
-    public Node<T> getOnlyChild() {
+    public KeyNode<T> getOnlyChild() {
         // Questo metodo verrà chiamato solo se si è verificato che il nodo abbia un unico figlio
         assert childrenCount() == 1;
 
@@ -69,13 +62,13 @@ public class Node<T> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Node<?> node = (Node<?>) o;
-        return key == node.key && data.equals(node.data) && Objects.equals(sx, node.sx) && Objects.equals(dx, node.dx);
+        KeyNode<?> node = (KeyNode<?>) o;
+        return key == node.key && getData().equals(node.getData()) && Objects.equals(sx, node.sx) && Objects.equals(dx, node.dx);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, data, sx, dx);
+        return Objects.hash(key, getData(), sx, dx);
     }
 
     @Override
