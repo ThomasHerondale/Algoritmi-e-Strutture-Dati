@@ -1,15 +1,16 @@
 package sorting;
 
-import java.util.Random;
+import java.util.*;
+import java.util.function.ToIntFunction;
 
 public class Sorter {
+    private static Random rng = null;
     /**
      * Don't let anyone instantiate this class.
      */
     private Sorter() {
 
     }
-    private static Random rng = null;
 
     @SuppressWarnings({"rawtypes", "unchecked", "ManualArrayCopy"})
     public static void insertionSort(Object[] array) throws ClassCastException {
@@ -145,5 +146,41 @@ public class Sorter {
         if (rng == null)
             rng = new Random();
         return rng;
+    }
+
+    public static void integerSort(Integer[] array, int max) {
+        int[] aux = new int[max + 1];
+        Arrays.fill(aux, 0);
+        for (var n : array) {
+            aux[n]++;
+        }
+        var pointer = 0;
+        for (var i = 0; i < max + 1; i++) {
+            while (aux[i] > 0) {
+                array[pointer] = i;
+                aux[i]--;
+                pointer++;
+            }
+        }
+    }
+
+    public static void bucketSort(String[] array) {
+        List<List<String>> aux = new ArrayList<>(26);
+        for (var i = 0; i < 26; i++) {
+            aux.add(new ArrayList<>());
+        }
+
+        for (var string : array) {
+            int key = Character.toUpperCase(string.charAt(0));
+            aux.get(key - 65).add(string);
+        }
+
+        var pointer = 0;
+        for (var list : aux) {
+            for (var string : list) {
+                array[pointer] = string;
+                pointer++;
+            }
+        }
     }
 }

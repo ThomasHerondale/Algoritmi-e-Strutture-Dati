@@ -1,5 +1,7 @@
 package tree;
 
+import tree.heap.MaxHeap;
+
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -9,7 +11,7 @@ import java.util.function.Consumer;
  *
  * @param <T> the type of the data contained in the nodes
  */
-public class EnforcedPositionalVector<T> implements Tree<T> {
+public class EnforcedPositionalVector<T> implements Tree<T>, MaxHeap<T> {
 
     /**
      * The list actually representing the positions vector with enforced structure.
