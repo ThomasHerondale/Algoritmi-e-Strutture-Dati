@@ -164,21 +164,20 @@ public class Sorter {
         }
     }
 
-    public static void bucketSort(String[] array) {
-        List<List<String>> aux = new ArrayList<>(26);
-        for (var i = 0; i < 26; i++) {
-            aux.add(new ArrayList<>());
+    public static <T> void bucketSort(T[] array, int bound, ToIntFunction<T> function) {
+        List<Deque<T>> aux = new ArrayList<>(bound + 1);
+        for (var i = 0; i < bound + 1; i++) {
+            aux.add(new ArrayDeque<>());
         }
 
-        for (var string : array) {
-            int key = Character.toUpperCase(string.charAt(0));
-            aux.get(key - 65).add(string);
+        for (var o : array) {
+            aux.get(function.applyAsInt(o)).offer(o);
         }
 
         var pointer = 0;
         for (var list : aux) {
-            for (var string : list) {
-                array[pointer] = string;
+            for (var o : list) {
+                array[pointer] = o;
                 pointer++;
             }
         }

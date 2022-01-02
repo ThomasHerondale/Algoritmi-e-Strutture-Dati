@@ -39,7 +39,7 @@ public class Test {
         String[] array = new String[] {
                 "abaco", "antonio", "ZEBRA", "ezecHiele", "antonio", "bolero", "RAVEL"
         };
-        Sorter.bucketSort(array);
+        Sorter.bucketSort(array, 27, value -> Character.toUpperCase(value.charAt(0)) - 65);
         System.out.println(Arrays.toString(array));
     }
 
