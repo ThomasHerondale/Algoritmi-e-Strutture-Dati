@@ -5,6 +5,7 @@ import java.util.function.ToIntFunction;
 
 public class Sorter {
     private static Random rng = null;
+
     /**
      * Don't let anyone instantiate this class.
      */
@@ -142,12 +143,6 @@ public class Sorter {
         return sup;
     }
 
-    private static Random getRNG() {
-        if (rng == null)
-            rng = new Random();
-        return rng;
-    }
-
     public static void integerSort(Integer[] array, int max) {
         int[] aux = new int[max + 1];
         Arrays.fill(aux, 0);
@@ -181,5 +176,40 @@ public class Sorter {
                 pointer++;
             }
         }
+    }
+
+    public static <T> void radixSort(T[] array, int bound, ToIntFunction<T> function) {
+        var counter = 0;
+        while (counter < 10) {
+            radixHelper(array, bound, counter, function);
+            counter++;
+        }
+    }
+
+    private static <T> void radixHelper(T[] array, int r, int digitIdx, ToIntFunction<T> function) {
+        List<Deque<T>> aux = new ArrayList<>(r);
+        for (var i = 0; i < r; i++) {
+            aux.add(new ArrayDeque<>());
+        }
+        var factor = Math.pow(10, digitIdx);
+
+        for (var o : array) {
+            var keyDigit = (int) (function.applyAsInt(o) % factor);
+            aux.get(keyDigit).offer(o);
+        }
+
+        var pointer = 0;
+        for (var list : aux) {
+            for (var o : list) {
+                array[pointer] = o;
+                pointer++;
+            }
+        }
+    }
+
+    private static Random getRNG() {
+        if (rng == null)
+            rng = new Random();
+        return rng;
     }
 }
