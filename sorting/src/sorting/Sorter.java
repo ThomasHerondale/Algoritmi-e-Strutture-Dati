@@ -62,6 +62,37 @@ public class Sorter {
         mergeSort(array, 0, array.length - 1);
     }
 
+    public static void heapSort(Object[] array) throws ClassCastException {
+        for (var i = (array.length / 2) - 1; i >= 0 ; i--) {
+            heapify(array, array.length, i);
+        }
+        for (var i = array.length - 1; i >= 0; i--) {
+            Object temp = array[0];
+            array[0] = array[i];
+            array[i] = temp;
+            
+            heapify(array, i, 0);
+        }
+    }
+
+    private static void heapify(Object[] array, int n, int nodeIndex) throws ClassCastException {
+        var maxIdx = nodeIndex;
+        var leftIdx = 2 * nodeIndex;
+        var rightIdx = 2 * nodeIndex + 1;
+
+        if (leftIdx < n && ((Comparable) array[leftIdx]).compareTo(array[maxIdx]) > 0)
+            maxIdx = leftIdx;
+        if (rightIdx < n && ((Comparable) array[rightIdx]).compareTo(array[maxIdx]) > 0)
+            maxIdx = rightIdx;
+
+        if (maxIdx != nodeIndex) {
+            var temp = array[nodeIndex];
+            array[nodeIndex] = array[maxIdx];
+            array[maxIdx] = temp;
+            heapify(array, n, maxIdx);
+        }
+    }
+
     private static void mergeSort(Object[] array, int f, int l) throws ClassCastException {
         if (f >= l)
             return;
