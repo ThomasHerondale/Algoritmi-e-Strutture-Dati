@@ -3,6 +3,7 @@ package sorting;
 import java.util.*;
 import java.util.function.ToIntFunction;
 
+@SuppressWarnings({"rawtypes", "unchecked", "ManualArrayCopy"})
 public class Sorter {
     private static Random rng = null;
 
@@ -13,7 +14,6 @@ public class Sorter {
 
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked", "ManualArrayCopy"})
     public static void insertionSort(Object[] array) throws ClassCastException {
         for (var i = 1; i < array.length; i++) {
             Comparable current = (Comparable) array[i];
@@ -30,7 +30,6 @@ public class Sorter {
         }
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public static void selectionSort(Object[] array) throws ClassCastException {
         for (var i = 0; i < array.length; i++) {
             var minimum = i;
@@ -44,7 +43,6 @@ public class Sorter {
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void bubbleSort(Object[] array) throws ClassCastException {
         boolean swapHappened;
         do {
@@ -73,7 +71,6 @@ public class Sorter {
         merge(array, f, mid, l);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     private static void merge(Object[] array, int f1, int l1, int l2) throws ClassCastException {
         int start = f1;
         int f2 = l1 + 1;
@@ -119,7 +116,6 @@ public class Sorter {
         quickSort(array, m + 1, l);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     private static int partition(Object[] array, int i, int l) {
         var inf = i;
         var sup = l + 1;
