@@ -3,8 +3,17 @@ package sorting;
 import java.util.*;
 import java.util.function.ToIntFunction;
 
+/**
+ * This class implements many famous sorting algorithms, some of them being more optimal than others.
+ * This class contains both comparison-based alghoritms and operation-based alghoritms, especially to sort integers or
+ * elements that can be mapped to integer keys easily, such as strings.
+ * Not that this class only contains static methods, therefore it doesn't declare any public constructor.
+ */
 @SuppressWarnings({"rawtypes", "unchecked", "ManualArrayCopy"})
 public class Sorter {
+    /**
+     * Random number generator used for pivot selection in the {@link Sorter#quickSort} method.
+     */
     private static Random rng = null;
 
     /**
@@ -14,6 +23,12 @@ public class Sorter {
 
     }
 
+    /**
+     * Sorts the specified array using the Insertion sort algorithm, in time O(n^2) for the worst case.
+     * Should the specified array be already sorted, the time complexity of this method becomes O(n).
+     * @param array the array to be sorted
+     * @throws ClassCastException if any of the array entries does not implement the {@link Comparable} interface
+     */
     public static void insertionSort(Object[] array) throws ClassCastException {
         for (var i = 1; i < array.length; i++) {
             Comparable current = (Comparable) array[i];
@@ -30,6 +45,11 @@ public class Sorter {
         }
     }
 
+    /**
+     * Sorts the specified array using the Selection sort algorithm, in time O(n^2) for every situation.
+     * @param array the array to be sorted
+     * @throws ClassCastException if any of the array entries does not implement the {@link Comparable} interface
+     */
     public static void selectionSort(Object[] array) throws ClassCastException {
         for (var i = 0; i < array.length; i++) {
             var minimum = i;
@@ -43,6 +63,11 @@ public class Sorter {
         }
     }
 
+    /**
+     * Sorts the specified array using the Bubble sort algorithm, in time O(n^2) for the worst case.
+     * @param array the array to be sorted
+     * @throws ClassCastException if any of the array entries does not implement the {@link Comparable} interface
+     */
     public static void bubbleSort(Object[] array) throws ClassCastException {
         boolean swapHappened;
         do {
@@ -58,39 +83,13 @@ public class Sorter {
         } while (swapHappened);
     }
 
+    /**
+     * Sorts the specified array using the Merge sort algorithm, in time O(nlog(n)) for every situation.
+     * @param array the array to be sorted
+     * @throws ClassCastException if any of the array entries does not implement the {@link Comparable} interface
+     */
     public static void mergeSort(Object[] array) throws ClassCastException {
         mergeSort(array, 0, array.length - 1);
-    }
-
-    public static void heapSort(Object[] array) throws ClassCastException {
-        for (var i = (array.length / 2) - 1; i >= 0 ; i--) {
-            heapify(array, array.length, i);
-        }
-        for (var i = array.length - 1; i >= 0; i--) {
-            Object temp = array[0];
-            array[0] = array[i];
-            array[i] = temp;
-            
-            heapify(array, i, 0);
-        }
-    }
-
-    private static void heapify(Object[] array, int n, int nodeIndex) throws ClassCastException {
-        var maxIdx = nodeIndex;
-        var leftIdx = 2 * nodeIndex;
-        var rightIdx = 2 * nodeIndex + 1;
-
-        if (leftIdx < n && ((Comparable) array[leftIdx]).compareTo(array[maxIdx]) > 0)
-            maxIdx = leftIdx;
-        if (rightIdx < n && ((Comparable) array[rightIdx]).compareTo(array[maxIdx]) > 0)
-            maxIdx = rightIdx;
-
-        if (maxIdx != nodeIndex) {
-            var temp = array[nodeIndex];
-            array[nodeIndex] = array[maxIdx];
-            array[maxIdx] = temp;
-            heapify(array, n, maxIdx);
-        }
     }
 
     private static void mergeSort(Object[] array, int f, int l) throws ClassCastException {
@@ -133,6 +132,48 @@ public class Sorter {
         }
     }
 
+    /**
+     * Sorts the specified array using the Heap sort algorithm, in time O(nlog(n)) for every situation.
+     * @param array the array to be sorted
+     * @throws ClassCastException if any of the array entries does not implement the {@link Comparable} interface
+     */
+    public static void heapSort(Object[] array) throws ClassCastException {
+        for (var i = (array.length / 2) - 1; i >= 0 ; i--) {
+            heapify(array, array.length, i);
+        }
+        for (var i = array.length - 1; i >= 0; i--) {
+            Object temp = array[0];
+            array[0] = array[i];
+            array[i] = temp;
+            
+            heapify(array, i, 0);
+        }
+    }
+
+    private static void heapify(Object[] array, int n, int nodeIndex) throws ClassCastException {
+        var maxIdx = nodeIndex;
+        var leftIdx = 2 * nodeIndex;
+        var rightIdx = 2 * nodeIndex + 1;
+
+        if (leftIdx < n && ((Comparable) array[leftIdx]).compareTo(array[maxIdx]) > 0)
+            maxIdx = leftIdx;
+        if (rightIdx < n && ((Comparable) array[rightIdx]).compareTo(array[maxIdx]) > 0)
+            maxIdx = rightIdx;
+
+        if (maxIdx != nodeIndex) {
+            var temp = array[nodeIndex];
+            array[nodeIndex] = array[maxIdx];
+            array[maxIdx] = temp;
+            heapify(array, n, maxIdx);
+        }
+    }
+
+    /**
+     * Sorts the specified array using a randomized version of the Quicksort alghoritm, in time O(nlog(n)) for
+     * every situation.
+     * @param array the array to be sorted
+     * @throws ClassCastException if any of the array entries does not implement the {@link Comparable} interface
+     */
     public static void quickSort(Object[] array) throws ClassCastException {
         quickSort(array, 0, array.length - 1);
     }
@@ -170,6 +211,12 @@ public class Sorter {
         return sup;
     }
 
+    /**
+     * Sorts the specified integer sequence using the Integer sort alghoritm, also known as Counting sort.
+     * Let {@code m} be the maximum integer in the array, this method has time complexity O(max(n, m)).
+     * @param array the array to be sorted
+     * @param max the biggest integer in the array
+     */
     public static void integerSort(Integer[] array, int max) {
         int[] aux = new int[max + 1];
         Arrays.fill(aux, 0);
@@ -186,6 +233,15 @@ public class Sorter {
         }
     }
 
+    /**
+     * Sorts the specified array using a perfectly stable version of the Bucket sort algorithm, provided that every
+     * entry of the array can be mapped to an integer key via the specified function.
+     * Let m be the maximum value returned by the specified function, this method has time complexity O(n+m).
+     * @param array the array to be sorted
+     * @param bound the maximum value returned by the specified function
+     * @param function the function that maps every array element to an integer, not necessarily injective
+     * @param <T> the type of the array entries and also the type of the parameter of the specified function
+     */
     public static <T> void bucketSort(T[] array, int bound, ToIntFunction<T> function) {
         List<Deque<T>> aux = new ArrayList<>(bound + 1);
         for (var i = 0; i < bound + 1; i++) {
@@ -205,6 +261,16 @@ public class Sorter {
         }
     }
 
+    /**
+     * Sorts the specified array using the Radix sort algorithm, provided that every entry of the array
+     * can be mapped to an integer key via the specified function.
+     * The time complexity of this algorithm is extimated to be around O(kn), being k the average digit count
+     * of all the values returned by the specified function.
+     * @param array the array to be sorted
+     * @param bound the maximum value returned by the specified function
+     * @param function the function that maps every array element to an integer, not necessarily injective
+     * @param <T> the type of the array entries and also the type of the parameter of the specified function
+     */
     public static <T> void radixSort(T[] array, int bound, ToIntFunction<T> function) {
         var counter = 0;
         while (counter < 10) {
